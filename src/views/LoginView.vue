@@ -20,10 +20,6 @@ import ForgotPasswordForm from '../components/frontend/components/ForgotPassword
       </div>
     </div>
   </div>
-
-  <!--  <LoginForm /><br /> -->
-  <!-- <UserRegistrationForm /><br />
-    <ForgotPasswordForm /> -->
 </template>
 
 <style lang="scss">
