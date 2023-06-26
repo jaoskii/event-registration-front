@@ -6,11 +6,21 @@
     <h4>Login to your account</h4>
     <div class="frm-grp">
       <label>Email</label>
-      <input type="email" class="frm-text" placeholder="name@gmail.com" />
+      <input
+        v-model="loginForm.username"
+        type="email"
+        class="frm-text"
+        placeholder="Enter your username"
+      />
     </div>
     <div class="frm-grp">
       <label>Password</label>
-      <input type="password" class="frm-text" placeholder="" />
+      <input
+        v-model="loginForm.password"
+        type="password"
+        class="frm-text"
+        placeholder="Enter your password"
+      />
     </div>
     <div class="frm-grp">
       <a class="nav-link" href="forgot-password.html">Forgot Password?</a>
@@ -35,7 +45,9 @@ export default {
   name: 'login-form',
   components: {},
   data() {
-    return {}
+    return {
+      loginForm: { username: '', password: '' }
+    }
   },
   created() {
     //console.log(useFrontendStore)
@@ -46,11 +58,39 @@ export default {
     toggleRegistrationForm() {
       useFrontendStore().$patch((state) => {
         state.viewRegisterForm ? (state.viewRegisterForm = false) : (state.viewRegisterForm = true)
-        console.log(state.viewRegisterForm)
       })
     },
     attemptLogin() {
-      useFrontendStore().tryLoggingIn({ g: 'g' }).then({})
+      useFrontendStore()
+        .tryLoggingIn(this.loginForm)
+        .then((res) => {
+          let data = res.data
+          if (data.status) {
+            /* notify({
+              title: 'LOGIN SUCCESS',
+              text: data.msg,
+              type: 'info',
+              duration: 10000,
+              speed: 1000
+            }) */
+            /* userStore.$patch((state) => {
+              ;(state.userToken = data.access_token),
+                Object.keys(state.logged_user).forEach((element) => {
+                  state.logged_user[element] = data[element]
+                })
+              sessionStorage.setItem('traqsx', data.access_token)
+            }) */
+            //self.$router.push('/landing')
+          } else {
+            /* notify({
+              title: 'LOGIN ERROR',
+              text: data.msg,
+              type: 'error',
+              duration: 10000,
+              speed: 1000
+            }) */
+          } //end if
+        })
     }
   },
   computed: {

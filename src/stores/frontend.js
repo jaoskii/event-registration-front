@@ -15,7 +15,7 @@ export const useFrontendStore = defineStore('frontend', {
     //NAMING CONVENTION SEMANTICS:
     //fetch + function name
     async tryLoggingIn(params = {}){
-        const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/merchants/qcoins/summary';
+        const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/auth/login';
         console.log(url);
         let config = {
           headers: {
