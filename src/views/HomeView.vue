@@ -2,7 +2,7 @@
 /* import TheWelcome from '../components/TheWelcome.vue' */
 import FrontendHeader from '../components/frontend/FrontendHeader.vue'
 import FrontendFooter from '../components/frontend/FrontendFooter.vue'
-
+import HeroBanner from '../components/frontend/components/HeroBanner.vue'
 import EventsAvailable from '../components/frontend/components/EventsAvailable.vue'
 import AboutUs from '../components/frontend/components/AboutUs.vue'
 </script>
@@ -10,6 +10,11 @@ import AboutUs from '../components/frontend/components/AboutUs.vue'
 <template>
   <FrontendHeader />
   <main>
+    <br /><br />
+    <br />
+    <br />
+    <br />
+    <HeroBanner /><br />
     <AboutUs /><br />
     <EventsAvailable />
   </main>

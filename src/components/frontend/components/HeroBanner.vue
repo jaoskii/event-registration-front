@@ -2,37 +2,57 @@
   <div class="hero">
     <div class="container">
       <div class="hero-grid">
-        <div id="slides" class="carousel slide" data-ride="carousel">
-          <ol class="carousel-indicators">
-            <li data-target="#slides" data-slide-to="0" class="active"></li>
-            <li data-target="#slides" data-slide-to="1"></li>
-            <li data-target="#slides" data-slide-to="2"></li>
-            <li data-target="#slides" data-slide-to="3"></li>
-          </ol>
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img src="img/slide 1.png" alt="first slide" />
-            </div>
-            <div class="carousel-item">
-              <img src="img/slide 2.png" alt="second slide" />
-            </div>
-            <div class="carousel-item">
-              <img src="img/slide 1.png" alt="third slide" />
-            </div>
-            <div class="carousel-item">
-              <img src="img/slide 2.png" alt="fourth slide" />
-            </div>
-          </div>
-          <a class="carousel-control-prev" href="#slides" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="carousel-control-next" href="#slides" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-          </a>
-        </div>
+        <carousel :items-to-show="1.5">
+          <slide v-for="slide in 10" :key="slide">
+            {{ slide }}
+          </slide>
+
+          <template #addons>
+            <navigation />
+            <pagination />
+          </template>
+        </carousel>
       </div>
     </div>
   </div>
 </template>
+
+<style>
+.carousel__item {
+  min-height: 200px;
+  width: 100%;
+  background-color: var(--vc-clr-primary);
+  color: var(--vc-clr-white);
+  font-size: 20px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel__slide {
+  padding: 10px;
+}
+
+.carousel__prev,
+.carousel__next {
+  box-sizing: content-box;
+  border: 5px solid white;
+}
+</style>
+
+<script>
+// If you are using PurgeCSS, make sure to whitelist the carousel CSS classes
+import 'vue3-carousel/dist/carousel.css'
+import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+
+export default {
+  name: 'App',
+  components: {
+    Carousel,
+    Slide,
+    Pagination,
+    Navigation
+  }
+}
+</script>
