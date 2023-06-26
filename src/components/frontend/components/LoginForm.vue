@@ -16,7 +16,7 @@
       <a class="nav-link" href="forgot-password.html">Forgot Password?</a>
     </div>
     <div class="frm-grp">
-      <button class="btn btn-md btn-default btn-full">Login</button>
+      <button class="btn btn-md btn-default btn-full" @click="attemptLogin()">Login</button>
     </div>
     <div class="frm-grp">
       <p>
@@ -42,12 +42,15 @@ export default {
   },
   mounted() {},
   methods: {
-    ...mapActions(useFrontendStore, []),
+    ...mapActions(useFrontendStore, ['tryLoggingIn']),
     toggleRegistrationForm() {
       useFrontendStore().$patch((state) => {
         state.viewRegisterForm ? (state.viewRegisterForm = false) : (state.viewRegisterForm = true)
         console.log(state.viewRegisterForm)
       })
+    },
+    attemptLogin() {
+      useFrontendStore().tryLoggingIn({ g: 'g' }).then({})
     }
   },
   computed: {

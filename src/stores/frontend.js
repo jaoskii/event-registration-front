@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-/* import axios from 'axios'; */
+import axios from 'axios';
 
 export const useFrontendStore = defineStore('frontend', {
   state: () => {
@@ -14,14 +14,13 @@ export const useFrontendStore = defineStore('frontend', {
   actions: {
     //NAMING CONVENTION SEMANTICS:
     //fetch + function name
-    /* async getMerchantCoinSummary(token, params = {}){
+    async tryLoggingIn(params = {}){
         const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/merchants/qcoins/summary';
-        
+        console.log(url);
         let config = {
           headers: {
               'Content-Type': 'application/json;charset=UTF-8',
               "Access-Control-Allow-Origin": "*",
-              'Authorization': 'Bearer ' + token
           }
         };
 
@@ -30,7 +29,7 @@ export const useFrontendStore = defineStore('frontend', {
         }).catch(function (error) {
             return error;
         });
-    }, */
+  },
   },
   persist: {
     storage: sessionStorage, // data in sessionStorage is cleared when the page session ends.
