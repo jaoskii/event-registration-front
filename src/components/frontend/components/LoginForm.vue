@@ -41,16 +41,25 @@
 import { mapStores, mapState, mapActions } from 'pinia'
 import { useFrontendStore } from '@/stores/frontend'
 
+import { useNotification } from '@kyvg/vue3-notification'
+const { notify } = useNotification()
+
 export default {
   name: 'login-form',
   components: {},
   data() {
     return {
-      loginForm: { username: '', password: '' }
+      loginForm: { username: 'jaoski', password: 'jaoski' }
     }
   },
   created() {
-    //console.log(useFrontendStore)
+    notify({
+      title: 'LOGIN SUCCESS',
+      text: 'kators',
+      type: 'info',
+      duration: 10000,
+      speed: 1000
+    })
   },
   mounted() {},
   methods: {
@@ -65,14 +74,15 @@ export default {
         .tryLoggingIn(this.loginForm)
         .then((res) => {
           let data = res.data
+
           if (data.status) {
-            /* notify({
+            notify({
               title: 'LOGIN SUCCESS',
               text: data.msg,
               type: 'info',
               duration: 10000,
               speed: 1000
-            }) */
+            })
             /* userStore.$patch((state) => {
               ;(state.userToken = data.access_token),
                 Object.keys(state.logged_user).forEach((element) => {
@@ -82,13 +92,13 @@ export default {
             }) */
             //self.$router.push('/landing')
           } else {
-            /* notify({
+            notify({
               title: 'LOGIN ERROR',
               text: data.msg,
               type: 'error',
               duration: 10000,
               speed: 1000
-            }) */
+            })
           } //end if
         })
     }
