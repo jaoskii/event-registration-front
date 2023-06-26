@@ -1,6 +1,6 @@
 :root {
-    --primary: #FDC827;
-    --secondary: #0B40AE;
+    --primary: #FBCE35;
+    --secondary: #0E0755;
     --default: #302E43;
     --alert: #ff0000;
     --font-family: 'Open Sans';
@@ -262,7 +262,7 @@
    /* margin: 0;
     padding: 0;*/
 
-    padding: 50px;
+    padding: 100px 0;
 }
     .login-frm .frm {
         width: 416px!important;
@@ -280,7 +280,12 @@
 
 .login-frm .logo-holder {
     margin-right: 0;
+    margin-left: 0;
+    margin-top: 100px;
 }
+    .login-frm .logo-holder a {
+        display: block;
+    }
 
 .login-frm .frm-grp label {
     text-align: left;

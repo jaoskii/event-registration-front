@@ -7,10 +7,10 @@
         </div>
         <nav>
           <ul class="nav-web">
-            <li class="active"><a class="nav-link" href="index.html">Home</a></li>
-            <li><a class="nav-link" href="about.html">About Us</a></li>
-            <li><a class="nav-link" href="events.html">Events</a></li>
-            <li><a class="nav-link" href="result.html">Results</a></li>
+            <li class="active"><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="result.html">Results</a></li>
           </ul>
           <ul class="nav-btn">
             <li><a href="login.html" class="btn btn-md btn-outline">Login</a></li>
