@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 /* import axios from 'axios'; */
 
-export const useDashboardStore = defineStore('dashboard', {
+export const useFrontendStore = defineStore('frontend', {
   state: () => {
     return { 
        viewRegisterForm: false
@@ -32,7 +32,6 @@ export const useDashboardStore = defineStore('dashboard', {
         });
     }, */
   },
-
   persist: {
     storage: sessionStorage, // data in sessionStorage is cleared when the page session ends.
   },

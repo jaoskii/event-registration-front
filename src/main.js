@@ -9,11 +9,13 @@ import App from './App.vue'
 import router from './router'
 import piniaPluginPersistedState from "pinia-plugin-persistedstate"
 
-const app = createApp(App)
-
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedState)
 
+const app = createApp(App)
+
+
 app.use(router)
+app.use(pinia)
 
 app.mount('#app')

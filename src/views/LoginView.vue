@@ -14,7 +14,7 @@ import ForgotPasswordForm from '../components/frontend/components/ForgotPassword
     <div class="login-section">
       <div class="container-fluid">
         <div class="login-frm">
-          <LoginForm v-if="this.viewRegisterForm" />
+          <LoginForm v-if="!this.viewRegisterForm" />
           <UserRegistrationForm v-else />
         </div>
       </div>
@@ -32,28 +32,35 @@ import ForgotPasswordForm from '../components/frontend/components/ForgotPassword
 @import '../assets/custom/css/scrolling-nav.css';
 @import '../assets/custom/css/component.css';
 @import '../assets/custom/css/responsive.css';
+@import '../assets/custom/css/jao.css';
 </style>
 
 <script>
-/* import { mapStores, mapState, mapActions } from 'pinia'
-import { useDashboardStore } from '@/stores/dashboard'
-const dashboardStore = useDashboardStore() */
+import { mapStores, mapState, mapActions } from 'pinia'
+import { useFrontendStore } from '@/stores/frontend'
 
 export default {
-  name: 'login-page',
+  name: 'login-form',
   components: {},
   data() {
-    return {
-      viewRegisterForm: false
-    }
+    return {}
   },
-  created() {},
+  created() {
+    console.log(useFrontendStore().getViewRegisterForm)
+  },
   mounted() {},
   methods: {
+    ...mapActions(useFrontendStore, []),
     toggleRegistrationForm() {
-      this.viewRegisterForm ? (this.viewRegisterForm = false) : (this.viewRegisterForm = true)
+      useFrontendStore().$patch((state) => {
+        state.viewRegisterForm ? (state.viewRegisterForm = false) : (state.viewRegisterForm = true)
+        console.log(state.viewRegisterForm)
+      })
     }
   },
-  computed: {}
+  computed: {
+    ...mapStores(useFrontendStore),
+    ...mapState(useFrontendStore, ['viewRegisterForm'])
+  }
 }
 </script>

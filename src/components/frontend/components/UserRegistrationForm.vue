@@ -67,7 +67,40 @@
       <button class="btn btn-md btn-default btn-full">Submit</button>
     </div>
     <div class="frm-grp">
-      <p>Already have an account? <a href="login.html">Login here.</a></p>
+      <p>
+        Already have an account?
+        <a @click="toggleRegistrationForm()" class="nav-link clickable">Login here.</a>
+      </p>
     </div>
   </div>
 </template>
+
+<script>
+import { mapStores, mapState, mapActions } from 'pinia'
+import { useFrontendStore } from '@/stores/frontend'
+
+export default {
+  name: 'login-form',
+  components: {},
+  data() {
+    return {}
+  },
+  created() {
+    //console.log(useFrontendStore)
+  },
+  mounted() {},
+  methods: {
+    ...mapActions(useFrontendStore, []),
+    toggleRegistrationForm() {
+      useFrontendStore().$patch((state) => {
+        state.viewRegisterForm ? (state.viewRegisterForm = false) : (state.viewRegisterForm = true)
+        console.log(state.viewRegisterForm)
+      })
+    }
+  },
+  computed: {
+    ...mapStores(useFrontendStore),
+    ...mapState(useFrontendStore, ['viewRegisterForm'])
+  }
+}
+</script>
