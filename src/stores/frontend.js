@@ -4,7 +4,13 @@ import axios from 'axios';
 export const useFrontendStore = defineStore('frontend', {
   state: () => {
     return { 
-       viewRegisterForm: false
+      viewRegisterForm: false,
+      userToken: null,
+      logged_user: {
+        /* 'email': '',
+        'name': '',
+        'referral_code': '', */
+      }
     }
   },
   getters: {

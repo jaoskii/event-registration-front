@@ -49,17 +49,12 @@ export default {
   components: {},
   data() {
     return {
-      loginForm: { username: 'jaoski', password: 'jaoski' }
+      loginForm: { username: 'jaoski', password: 'jaoski' },
+      userTokenName: import.meta.env.VITE_SITE_TOKEN_NAME
     }
   },
   created() {
-    notify({
-      title: 'LOGIN SUCCESS',
-      text: 'kators',
-      type: 'info',
-      duration: 10000,
-      speed: 1000
-    })
+    console.log(this.userTokenName)
   },
   mounted() {},
   methods: {
@@ -83,14 +78,17 @@ export default {
               duration: 10000,
               speed: 1000
             })
-            /* userStore.$patch((state) => {
-              ;(state.userToken = data.access_token),
-                Object.keys(state.logged_user).forEach((element) => {
-                  state.logged_user[element] = data[element]
-                })
-              sessionStorage.setItem('traqsx', data.access_token)
-            }) */
-            //self.$router.push('/landing')
+
+            useFrontendStore().$patch((state) => {
+              state.userToken = data.access_token
+              Object.keys(state.logged_user).forEach((element) => {
+                state.logged_user[element] = data[element]
+              })
+
+              sessionStorage.setItem(this.userTokenName, data.access_token)
+            })
+
+            this.$router.push('/')
           } else {
             notify({
               title: 'LOGIN ERROR',

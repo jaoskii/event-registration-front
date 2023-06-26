@@ -2,17 +2,56 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 
+var tokenName = import.meta.env.VITE_SITE_TOKEN_NAME;
+
+function requireSecureToken(to, from, next) {
+  var isAuthenticated = false;
+  //this is just an example. You will have to find a better or 
+  // centralised way to handle you sessionStorage data handling 
+  if (sessionStorage.getItem(tokenName)) {
+    isAuthenticated = true;
+  } else {
+    isAuthenticated = false;
+  }
+
+  if (isAuthenticated) {
+    next(); // allow to enter route
+  } else {
+    next('/login'); // go to '/login';
+  }
+} //end fn
+
+function checkTokenAvailability(to, from, next) {
+  var isAuthenticated = false;
+  //this is just an example. You will have to find a better or 
+  // centralised way to handle you sessionStorage data handling 
+  
+  if (sessionStorage.getItem(tokenName) != null) {
+    isAuthenticated = true;
+  } else {
+    isAuthenticated = false;
+  }
+
+  if (!isAuthenticated) {
+    next(); // go to '/login';
+  } else {
+    next('/'); // allow to enter route
+  }
+} //end fn
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/login',
       name: 'login',
+      beforeEnter: checkTokenAvailability,
       component: LoginView
     },
     {
       path: '/',
       name: 'home',
+      beforeEnter: requireSecureToken,
       component: HomeView
     },
     {
