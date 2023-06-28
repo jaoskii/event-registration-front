@@ -16,7 +16,8 @@ export const useFrontendStore = defineStore('frontendstore', {
         "slide2.png",
         "slide1.png",
         "slide2.png",
-      ]
+      ],
+      tkn_name: import.meta.env.VITE_SITE_TOKEN_NAME
     }
   },
   getters: {

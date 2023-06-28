@@ -7,7 +7,7 @@
           <div class="col-md-4">
             <div class="event-item">
               <div class="event-img">
-                <img src="img/event-thumb.png" />
+                <img src="./../../../assets/custom/img/event-thumb.png" />
                 <span class="category">Bike</span>
               </div>
               <div class="event-text">
@@ -25,7 +25,7 @@
           <div class="col-md-4">
             <div class="event-item">
               <div class="event-img">
-                <img src="img/event-thumb.png" />
+                <img src="./../../../assets/custom/img/event-thumb.png" />
                 <span class="category">Bike</span>
               </div>
               <div class="event-text">
@@ -43,7 +43,7 @@
           <div class="col-md-4">
             <div class="event-item">
               <div class="event-img">
-                <img src="img/event-thumb.png" />
+                <img src="./../../../assets/custom/img/event-thumb.png" />
                 <span class="category">Bike</span>
               </div>
               <div class="event-text">
@@ -66,7 +66,7 @@
           <div class="col-md-4">
             <div class="event-item">
               <div class="event-img">
-                <img src="img/event-thumb.png" />
+                <img src="./../../../assets/custom/img/event-thumb.png" />
                 <span class="category">Bike</span>
               </div>
               <div class="event-text">
@@ -84,7 +84,7 @@
           <div class="col-md-4">
             <div class="event-item">
               <div class="event-img">
-                <img src="img/event-thumb.png" />
+                <img src="./../../../assets/custom/img/event-thumb.png" />
                 <span class="category">Bike</span>
               </div>
               <div class="event-text">
@@ -102,7 +102,7 @@
           <div class="col-md-4">
             <div class="event-item">
               <div class="event-img">
-                <img src="img/event-thumb.png" />
+                <img src="./../../../assets/custom/img/event-thumb.png" />
                 <span class="category">Bike</span>
               </div>
               <div class="event-text">

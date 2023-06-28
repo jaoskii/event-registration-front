@@ -16,7 +16,7 @@
           </div>
           <div class="col-md-6">
             <div class="img-holder">
-              <img src="img/about-img.png" />
+              <img src="./../../../assets/custom/img/about-img.png" />
             </div>
           </div>
         </div>

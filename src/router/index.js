@@ -51,7 +51,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      beforeEnter: requireSecureToken,
+      //beforeEnter: requireSecureToken,
       component: HomeView
     },
     {

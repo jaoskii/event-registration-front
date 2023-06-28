@@ -19,13 +19,13 @@
           </div>
           <div class="col-md-4">
             <div class="social">
-              <a href="#"><img src="img/fb.svg" /></a>
-              <a href="#"><img src="img/ig.svg" /></a>
-              <a href="#"><img src="img/tw.svg" /></a>
+              <a href="#"><img src="./../../assets/custom/img/fb.svg" /></a>
+              <a href="#"><img src="./../../assets/custom/img/ig.svg" /></a>
+              <a href="#"><img src="./../../assets/custom/img/tw.svg" /></a>
             </div>
             <div class="powered">
               <h4>Powered by</h4>
-              <img src="img/traqs-logo.svg" />
+              <img src="./../../assets/custom/img/traqs-logo.svg" />
             </div>
           </div>
         </div>
