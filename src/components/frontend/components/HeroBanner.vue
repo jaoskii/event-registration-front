@@ -2,9 +2,14 @@
   <div class="hero">
     <div class="container">
       <div class="hero-grid">
-        <carousel :items-to-show="1.5">
-          <slide v-for="slide in 10" :key="slide">
-            {{ slide }}
+        <carousel :items-to-show="1">
+          <slide v-for="slide in this.fstore.frontendBannerImages.length" :key="slide">
+            <div class="carousel__item">
+              <img
+                :src="getImageUrl(this.fstore.frontendBannerImages[slide - 1])"
+                :alt="slide - 1"
+              />
+            </div>
           </slide>
 
           <template #addons>
@@ -46,13 +51,34 @@
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 
+import { mapStores, mapState, mapActions } from 'pinia'
+import { useFrontendStore } from '@/stores/frontend'
+
 export default {
-  name: 'App',
+  name: 'hero-banner',
   components: {
     Carousel,
     Slide,
     Pagination,
     Navigation
+  },
+  data() {
+    return {
+      fstore: useFrontendStore(),
+      sampleImage: './../../assets/custom/img/logo.png'
+    }
+  },
+  methods: {
+    ...mapActions(useFrontendStore, []),
+    getImageUrl(filename) {
+      return new URL(`./../../../assets/custom/img/` + filename, import.meta.url).href
+    }
+  },
+  created() {},
+  mounted() {},
+  computed: {
+    ...mapStores(useFrontendStore),
+    ...mapState(useFrontendStore, ['frontendBannerImages'])
   }
 }
 </script>

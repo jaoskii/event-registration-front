@@ -54,7 +54,7 @@ export default {
     }
   },
   created() {
-    console.log(this.userTokenName)
+    //console.log(this.userTokenName)
   },
   mounted() {},
   methods: {

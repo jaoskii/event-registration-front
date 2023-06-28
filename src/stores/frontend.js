@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import axios from 'axios';
 
-export const useFrontendStore = defineStore('frontend', {
+export const useFrontendStore = defineStore('frontendstore', {
   state: () => {
     return { 
       viewRegisterForm: false,
@@ -10,12 +10,19 @@ export const useFrontendStore = defineStore('frontend', {
         /* 'email': '',
         'name': '',
         'referral_code': '', */
-      }
+      },
+      frontendBannerImages: [
+        "slide1.png",
+        "slide2.png",
+        "slide1.png",
+        "slide2.png",
+      ]
     }
   },
   getters: {
-    //for Summary Data
-    getViewRegisterForm: (state) => state.viewRegisterForm
+    //only used for state + other data transform variables
+    //getViewRegisterForm: (state) => state.viewRegisterForm,
+    //getViewRegisterForm: (state) => state.viewRegisterForm
   },
   actions: {
     //NAMING CONVENTION SEMANTICS:
