@@ -1,0 +1,20 @@
+<template>
+  <div class="col-md-4">
+    <div class="event-item">
+      <div class="event-img">
+        <img src="./../../../assets/custom/img/event-thumb.png" />
+        <span class="category">Bike</span>
+      </div>
+      <div class="event-text">
+        <h4>Coco Event 1</h4>
+        <span>21 May 2023 (Sunday)</span>
+        <span>SM Clark, Pampanga</span>
+        <div class="event-btn">
+          <a href="event-details.html" class="btn btn-md btn-full btn-outline-secondary"
+            >Join now</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
