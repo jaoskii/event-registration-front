@@ -187,7 +187,7 @@ export default {
   },
   methods: {
     ...mapActions(useFrontendStore, []),
-    handleScroll(event) {
+    handleScroll() {
       var currentScrollPosition = window.scrollY
       if (currentScrollPosition < this.scrollPosition) {
         if (window.scrollY < 484) {
