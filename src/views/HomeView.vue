@@ -2,16 +2,27 @@
 /* import TheWelcome from '../components/TheWelcome.vue' */
 import FrontendHeader from '../components/frontend/FrontendHeader.vue'
 import FrontendFooter from '../components/frontend/FrontendFooter.vue'
-
+import HeroBanner from '../components/frontend/components/HeroBanner.vue'
 import EventsAvailable from '../components/frontend/components/EventsAvailable.vue'
+import SponsorsSlider from '../components/frontend/components/SponsorsSlider.vue'
 import AboutUs from '../components/frontend/components/AboutUs.vue'
 </script>
 
 <template>
   <FrontendHeader />
   <main>
+    <br />
+    <HeroBanner /><br />
+    <EventsAvailable /><br />
     <AboutUs /><br />
-    <EventsAvailable />
+    <SponsorsSlider /><br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
   </main>
   <FrontendFooter />
 </template>

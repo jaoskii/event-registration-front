@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
+import EventsView from '../views/EventsView.vue'
+import EventDetails from '../views/EventDetails.vue'
 
 var tokenName = import.meta.env.VITE_SITE_TOKEN_NAME;
 
@@ -51,8 +53,20 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      beforeEnter: requireSecureToken,
+      //beforeEnter: requireSecureToken,
       component: HomeView
+    },
+    {
+      path: '/events',
+      name: 'event-listing',
+      //beforeEnter: requireSecureToken,
+      component: EventsView
+    },
+    {
+      path: '/event/details',
+      name: 'event-details',
+      //beforeEnter: requireSecureToken,
+      component: EventDetails
     },
     {
       path: '/about',

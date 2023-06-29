@@ -1,3 +1,22 @@
 .clickable {
     cursor: pointer;
 }
+
+.navlink{
+    text-decoration: none;
+}
+
+.accord-title {
+    font-size:20px;
+    font-weight:bold;
+    background-color: #e6d646 !important;
+}
+
+.jao-banner-margin{
+    margin-top: 3.7%;
+}
+
+.jao-banner-height-event-details{
+    height: 550px !important;
+}
+
