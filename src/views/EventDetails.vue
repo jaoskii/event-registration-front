@@ -171,7 +171,7 @@ import { mapStores, mapState, mapActions } from 'pinia'
 import { useFrontendStore } from '@/stores/frontend'
 
 export default {
-  name: 'index-page',
+  name: 'eventdetails-page',
   components: {},
   data() {
     return {

@@ -12,6 +12,7 @@ import AboutUs from '../components/frontend/components/AboutUs.vue'
   <FrontendHeader />
   <main>
     <br />
+
     <HeroBanner /><br />
     <EventsAvailable /><br />
     <AboutUs /><br />

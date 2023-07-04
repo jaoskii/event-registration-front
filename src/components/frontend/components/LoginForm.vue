@@ -7,10 +7,10 @@
     <div class="frm-grp">
       <label>Email</label>
       <input
-        v-model="loginForm.username"
+        v-model="loginForm.email"
         type="email"
         class="frm-text"
-        placeholder="Enter your username"
+        placeholder="Enter your email"
       />
     </div>
     <div class="frm-grp">
@@ -49,7 +49,7 @@ export default {
   components: {},
   data() {
     return {
-      loginForm: { username: 'jaoski', password: 'jaoski' },
+      loginForm: { email: 'jim@inventlabs.tech', password: 'jaoski' },
       userTokenName: import.meta.env.VITE_SITE_TOKEN_NAME
     }
   },
