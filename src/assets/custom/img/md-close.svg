@@ -1,7 +1,7 @@
 <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="15" cy="15" r="15" fill="#ED1B2E" fill-opacity="0.2"/>
-<rect x="10.8411" y="10.1785" width="6.99796" height="1.34576" rx="0.67288" transform="rotate(45 10.8411 10.1785)" fill="#ED1B2E"/>
-<rect x="9.88916" y="19.1235" width="6.99796" height="1.34576" rx="0.67288" transform="rotate(-45 9.88916 19.1235)" fill="#ED1B2E"/>
-<rect width="6.99796" height="1.34576" rx="0.67288" transform="matrix(-0.707107 0.707107 0.707107 0.707107 18.8767 10.1785)" fill="#ED1B2E"/>
-<rect width="6.99796" height="1.34576" rx="0.67288" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 19.8284 19.1235)" fill="#ED1B2E"/>
+<circle cx="15" cy="15" r="15" fill="#999999" fill-opacity="0.2"/>
+<rect x="10.8411" y="10.1785" width="6.99796" height="1.34576" rx="0.67288" transform="rotate(45 10.8411 10.1785)" fill="#999999"/>
+<rect x="9.88916" y="19.1235" width="6.99796" height="1.34576" rx="0.67288" transform="rotate(-45 9.88916 19.1235)" fill="#999999"/>
+<rect width="6.99796" height="1.34576" rx="0.67288" transform="matrix(-0.707107 0.707107 0.707107 0.707107 18.8767 10.1785)" fill="#999999"/>
+<rect width="6.99796" height="1.34576" rx="0.67288" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 19.8284 19.1235)" fill="#999999"/>
 </svg>

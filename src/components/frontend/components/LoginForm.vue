@@ -49,7 +49,12 @@ export default {
   components: {},
   data() {
     return {
-      loginForm: { email: 'jim@inventlabs.tech', password: 'jaoski' },
+      fstore: useFrontendStore(),
+      loginForm: {
+        email: 'tamlaylovestokwa994@gmail.com',
+        password: 'jaoski',
+        platform: import.meta.env.VITE_CLIENT_SOURCE
+      },
       userTokenName: import.meta.env.VITE_SITE_TOKEN_NAME
     }
   },
@@ -58,7 +63,7 @@ export default {
   },
   mounted() {},
   methods: {
-    ...mapActions(useFrontendStore, ['tryLoggingIn']),
+    ...mapActions(useFrontendStore, ['tryLoggingIn', 'tryGetUserProfile']),
     toggleRegistrationForm() {
       useFrontendStore().$patch((state) => {
         state.viewRegisterForm ? (state.viewRegisterForm = false) : (state.viewRegisterForm = true)
@@ -70,28 +75,49 @@ export default {
         .then((res) => {
           let data = res.data
 
-          if (data.status) {
+          if (data.code == 100) {
             notify({
-              title: 'LOGIN SUCCESS',
-              text: data.msg,
+              title: data.title,
+              text: 'Logged in successfully! Please wait',
               type: 'info',
               duration: 10000,
               speed: 1000
             })
 
-            useFrontendStore().$patch((state) => {
-              state.userToken = data.access_token
-              Object.keys(state.logged_user).forEach((element) => {
-                state.logged_user[element] = data[element]
-              })
-
-              sessionStorage.setItem(this.userTokenName, data.access_token)
+            this.fstore.$patch((state) => {
+              state.userToken = data.dataObject
+              sessionStorage.setItem(this.userTokenName, data.dataObject)
             })
 
-            this.$router.push('/')
+            this.fstore.tryGetUserProfile().then((res3) => {
+              let data3 = res3.data
+              if (data3.code == 100) {
+                this.fstore.$patch((state) => {
+                  state.logged_user = data3.dataObject
+                })
+
+                notify({
+                  title: 'Fetching profile data....',
+                  text: 'Fetching profile data, Please wait you will be redirected. Thank you!',
+                  type: 'info',
+                  duration: 10000,
+                  speed: 1000
+                })
+
+                this.$router.push('/')
+              } else {
+                notify({
+                  title: data3.title,
+                  text: data3.message,
+                  type: 'error',
+                  duration: 10000,
+                  speed: 1000
+                })
+              }
+            })
           } else {
             notify({
-              title: 'LOGIN ERROR',
+              title: data.title,
               text: data.msg,
               type: 'error',
               duration: 10000,

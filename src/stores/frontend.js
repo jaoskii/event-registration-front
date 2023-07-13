@@ -22,23 +22,21 @@ export const useFrontendStore = defineStore('frontendstore', {
   },
   getters: {
     //only used for state + other data transform variables
-    //getViewRegisterForm: (state) => state.viewRegisterForm,
+    isUserActivated: (state) => (state.logged_user.is_active == 1) ? true : false,
     //getViewRegisterForm: (state) => state.viewRegisterForm
   },
   actions: {
       //NAMING CONVENTION SEMANTICS:
       //fetch + function name
       async tryLoggingIn(params = {}){
-          const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/auth/login';
-          console.log(url);
-          let config = {
-            headers: {
-                'Content-Type': 'application/json;charset=UTF-8',
-                "Access-Control-Allow-Origin": "*",
-            }
-          };
+          const url = import.meta.env.VITE_TRAQS_BACKEND_URL + 'authentication/login';
+           var formParams = new FormData();
+          
+          Object.keys(params).forEach((field_name) => {
+              formParams.append(field_name, params[field_name]);
+          });
 
-          return await axios.post(url, params, config).then(function (data) {
+          return await axios.post(url, formParams).then(function (data) {
               return data;
           }).catch(function (error) {
               return error;
@@ -60,6 +58,49 @@ export const useFrontendStore = defineStore('frontendstore', {
               return error;
           });
     },
+    async tryGetUserProfile(){
+          const url = import.meta.env.VITE_TRAQS_BACKEND_URL + 'v1/user/me';
+        
+          let config = {
+            headers: {
+                'Authorization': this.userToken,
+            }
+          };
+
+          return await axios.get(url, config).then(function (data) {
+              return data;
+          }).catch(function (error) {
+              return error;
+          });
+    },
+    async tryVerifyOTP(otp){
+          const url = import.meta.env.VITE_TRAQS_BACKEND_URL + 'v1/verification';
+          var formParams = new FormData();
+          
+          formParams.append('otp', otp);
+          formParams.append('email', this.logged_user.email);
+
+          return await axios.post(url, formParams).then(function (data) {
+              return data;
+          }).catch(function (error) {
+              return error;
+          });
+    },
+    async tryResendOTP(params){
+          const url = import.meta.env.VITE_TRAQS_BACKEND_URL + 'v1/verification';
+          var formParams = new FormData();
+          
+          Object.keys(params).forEach((field_name) => {
+            formParams.append(field_name, params[field_name]);
+          });
+
+          return await axios.get(url, formParams).then(function (data) {
+              return data;
+          }).catch(function (error) {
+              return error;
+          });
+    },
+
 
   },
   persist: {
