@@ -4,55 +4,21 @@
       <div class="grid-section">
         <h3>Upcoming Events <a class="btn btn-sm btn-secondary">View all</a></h3>
         <div class="row justify-content-center">
-          <div class="col-md-4">
+          <div class="col-md-4" v-for="up_event in events.upcoming" :key="up_event.id">
             <div class="event-item">
               <div class="event-img">
                 <img src="./../../../assets/custom/img/event-thumb.png" />
-                <span class="category">Bike</span>
+                <span class="category">{{ up_event.event_category }}</span>
               </div>
               <div class="event-text">
-                <h4>Coco Event 1</h4>
-                <span>21 May 2023 (Sunday)</span>
-                <span>SM Clark, Pampanga</span>
+                <h4>{{ up_event.event_name }}</h4>
+                <span>{{ up_event.converted_startdate }}</span>
+                <span>{{ up_event.event_location }}</span>
                 <div class="event-btn">
-                  <a href="event-details.html" class="btn btn-md btn-full btn-outline-secondary"
-                    >Join now</a
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="event-item">
-              <div class="event-img">
-                <img src="./../../../assets/custom/img/event-thumb.png" />
-                <span class="category">Bike</span>
-              </div>
-              <div class="event-text">
-                <h4>Coco Event 2</h4>
-                <span>28 May 2023 (Sunday)</span>
-                <span>SM Seaside Cebu</span>
-                <div class="event-btn">
-                  <a href="event-details.html" class="btn btn-md btn-full btn-outline-secondary"
-                    >Join now</a
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="event-item">
-              <div class="event-img">
-                <img src="./../../../assets/custom/img/event-thumb.png" />
-                <span class="category">Bike</span>
-              </div>
-              <div class="event-text">
-                <h4>Coco Event 3</h4>
-                <span>28 May 2023 (Sunday)</span>
-                <span>SM Seaside Cebu</span>
-                <div class="event-btn">
-                  <a href="event-details.html" class="btn btn-md btn-full btn-outline-secondary"
-                    >Join now</a
+                  <router-link
+                    :to="'/event/details/' + up_event.id"
+                    class="btn btn-md btn-full btn-outline-secondary"
+                    >View Details</router-link
                   >
                 </div>
               </div>
@@ -63,55 +29,21 @@
       <div class="grid-section mt-48">
         <h3>Past Events <a class="btn btn-sm btn-secondary">View all</a></h3>
         <div class="row justify-content-center">
-          <div class="col-md-4">
+          <div class="col-md-4" v-for="fin_event in events.finished" :key="fin_event.id">
             <div class="event-item">
               <div class="event-img">
                 <img src="./../../../assets/custom/img/event-thumb.png" />
-                <span class="category">Bike</span>
+                <span class="category">{{ fin_event.event_category }}</span>
               </div>
               <div class="event-text">
-                <h4>Coco Event 1</h4>
-                <span>21 May 2023 (Sunday)</span>
-                <span>SM Clark, Pampanga</span>
+                <h4>{{ fin_event.event_name }}</h4>
+                <span>{{ fin_event.converted_startdate }}</span>
+                <span>{{ fin_event.event_location }}</span>
                 <div class="event-btn">
-                  <a href="event-details.html" class="btn btn-md btn-full btn-outline-secondary"
-                    >Join now</a
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="event-item">
-              <div class="event-img">
-                <img src="./../../../assets/custom/img/event-thumb.png" />
-                <span class="category">Bike</span>
-              </div>
-              <div class="event-text">
-                <h4>Coco Event 2</h4>
-                <span>28 May 2023 (Sunday)</span>
-                <span>SM Seaside Cebu</span>
-                <div class="event-btn">
-                  <a href="event-details.html" class="btn btn-md btn-full btn-outline-secondary"
-                    >Join now</a
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="event-item">
-              <div class="event-img">
-                <img src="./../../../assets/custom/img/event-thumb.png" />
-                <span class="category">Bike</span>
-              </div>
-              <div class="event-text">
-                <h4>Coco Event 3</h4>
-                <span>28 May 2023 (Sunday)</span>
-                <span>SM Seaside Cebu</span>
-                <div class="event-btn">
-                  <a href="event-details.html" class="btn btn-md btn-full btn-outline-secondary"
-                    >Join now</a
+                  <router-link
+                    :to="'/event/details/' + fin_event.id"
+                    class="btn btn-md btn-full btn-outline-secondary"
+                    >View Details</router-link
                   >
                 </div>
               </div>
@@ -122,4 +54,46 @@
     </div>
   </div>
 </template>
->
+
+<script>
+import { mapStores, mapState, mapActions } from 'pinia'
+import { useFrontendStore } from '@/stores/frontend'
+
+export default {
+  name: 'frontend-nav',
+  components: {},
+  data() {
+    return {
+      fstore: useFrontendStore(),
+      showProfileDropdown: false,
+      events: {
+        finished: [],
+        upcoming: []
+      }
+    }
+  },
+  created() {},
+  mounted() {
+    this.getEvents()
+  },
+  methods: {
+    ...mapActions(useFrontendStore, ['tryFetchEvents']),
+    getEvents() {
+      this.fstore.tryFetchEvents({ pull_type: 'upcoming' }).then((res) => {
+        let data = res.data
+        this.events.upcoming = data.body
+        /* data.body.forEach((element) => {}) */
+      })
+
+      this.fstore.tryFetchEvents({ pull_type: 'past' }).then((res2) => {
+        let data2 = res2.data
+        this.events.finished = data2.body
+      })
+    }
+  },
+  computed: {
+    ...mapStores(useFrontendStore),
+    ...mapState(useFrontendStore, [])
+  }
+}
+</script>

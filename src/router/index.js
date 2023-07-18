@@ -63,7 +63,7 @@ const router = createRouter({
       component: EventsView
     },
     {
-      path: '/event/details',
+      path: '/event/details/:eventid',
       name: 'event-details',
       //beforeEnter: requireSecureToken,
       component: EventDetails

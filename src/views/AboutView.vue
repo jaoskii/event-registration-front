@@ -6,7 +6,7 @@ import HeroBanner from '../components/frontend/components/HeroBanner.vue'
 </script>
 
 <template>
-  <FrontendHeader />
+  <!-- <FrontendHeader />
   <main>
     <br />
     <br />
@@ -69,7 +69,7 @@ import HeroBanner from '../components/frontend/components/HeroBanner.vue'
     <br />
     <br />
   </main>
-  <FrontendFooter />
+  <FrontendFooter /> -->
 </template>
 
 <style lang="scss">

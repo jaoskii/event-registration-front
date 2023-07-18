@@ -17,7 +17,7 @@ export const useFrontendStore = defineStore('frontendstore', {
         "slide1.png",
         "slide2.png",
       ],
-      tkn_name: import.meta.env.VITE_SITE_TOKEN_NAME
+      tkn_name: import.meta.env.VITE_SITE_TOKEN_NAME,
     }
   },
   getters: {
@@ -95,6 +95,33 @@ export const useFrontendStore = defineStore('frontendstore', {
           });
 
           return await axios.get(url, formParams).then(function (data) {
+              return data;
+          }).catch(function (error) {
+              return error;
+          });
+    },
+
+
+    async tryFetchEvents(params){
+          const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/public/events';
+          var formParams = new FormData();
+          
+          Object.keys(params).forEach((field_name) => {
+            formParams.append(field_name, params[field_name]);
+          });
+
+          return await axios.post(url, formParams).then(function (data) {
+              return data;
+          }).catch(function (error) {
+              return error;
+          });
+    },
+
+    async tryFetchEventDetails(eventid){
+          const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/public/events/details/' + eventid;
+          var formParams = new FormData();
+        
+          return await axios.post(url, formParams).then(function (data) {
               return data;
           }).catch(function (error) {
               return error;

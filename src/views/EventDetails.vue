@@ -10,10 +10,12 @@ import FrontendFooter from '../components/frontend/FrontendFooter.vue'
     <div class="event-banner jao-banner-margin jao-banner-height-event-details">
       <img src="./../assets/custom/img/event-detail-img.png" />
       <div class="event-details-title">
-        <span class="category">Bike</span>
-        <h2>Coco Event 1</h2>
-        <p>May 21, 2023</p>
-        <p>SM Clark, Pampanga</p>
+        <span class="category" v-if="event_details != null">{{
+          event_details.event_category
+        }}</span>
+        <h2 v-if="event_details != null">{{ event_details.event_name }}</h2>
+        <p v-if="event_details != null">{{ event_details.converted_startdate }}</p>
+        <p v-if="event_details != null">{{ event_details.event_location }}</p>
         <a
           href="#"
           class="btn btn-reg btn-default fixme"
@@ -72,9 +74,21 @@ import FrontendFooter from '../components/frontend/FrontendFooter.vue'
                   <ul class="list1">
                     <li><span>Registration: Until 17 May 2023 (Wednesday)</span></li>
                     <li><span>Cycling Kit Claiming (at SM City Clark)</span></li>
-                    <li><span>Date: 21 May 2023 (Sunday)</span></li>
-                    <li><span>Location: SM Clark, Pampanga</span></li>
-                    <li><span>Registration Fee: Php 1,000</span></li>
+                    <li>
+                      <span v-if="event_details != null"
+                        >Date: {{ event_details.converted_startdate }}</span
+                      >
+                    </li>
+                    <li>
+                      <span v-if="event_details != null"
+                        >Location: {{ event_details.event_location }}</span
+                      >
+                    </li>
+                    <li>
+                      <span v-if="event_details != null"
+                        >Registration Fee: Php {{ event_details.event_amount }}</span
+                      >
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -175,18 +189,26 @@ export default {
   components: {},
   data() {
     return {
-      hangRegisterButton: false
+      hangRegisterButton: false,
+      fstore: useFrontendStore(),
+      event_details: null
     }
   },
   created() {
     window.addEventListener('scroll', this.handleScroll)
+
+    this.fstore.tryFetchEventDetails(this.$route.params.eventid).then((res) => {
+      let details = res.data.body.details
+      //let registrants = res.data.body.registrants
+      this.event_details = details
+    })
   },
   mounted() {},
   unmounted() {
     window.removeEventListener('scroll', this.handleScroll)
   },
   methods: {
-    ...mapActions(useFrontendStore, []),
+    ...mapActions(useFrontendStore, ['tryFetchEventDetails']),
     handleScroll() {
       var currentScrollPosition = window.scrollY
       if (currentScrollPosition < this.scrollPosition) {
