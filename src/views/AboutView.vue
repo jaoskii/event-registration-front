@@ -6,7 +6,7 @@ import HeroBanner from '../components/frontend/components/HeroBanner.vue'
 </script>
 
 <template>
-  <FrontendHeader />
+  <!--<FrontendHeader />-->
   <main>
     <br />
     <br />
@@ -24,7 +24,6 @@ import HeroBanner from '../components/frontend/components/HeroBanner.vue'
           />
         </div>
         <div ref="mainContentEditor"></div>
-        <!-- <QuillEditor ref="editor" :value="this.event_detail_form.event_content" theme="snow" /> -->
         <br />
         <br />
         <button type="button" class="btn btn-primary" @click="addEventDetails">Add detail</button>
@@ -43,7 +42,7 @@ import HeroBanner from '../components/frontend/components/HeroBanner.vue'
     <br />
     <br />
     <br />
-    <FrontendFooter />
+<!--    <FrontendFooter />-->
   </main>
   <!-- 
   <main>
@@ -155,41 +154,44 @@ export default {
   methods: {
     ...mapActions(useDashboardStore, ['tryAddEventDetail']),
     addEventDetails() {
-      this.editor = new Quill(this.$refs.editor, {})
-      console.log(this.editor.root.innerHTML)
-      //console.log(this.event_detail_form.getHTML())
-      /* this.dstore.tryAddEventDetail(this.event_detail_form).then((res) => {
-        console.log(res)
-      }) */
+      console.log(this.mainContentEditorValue);
     },
     initMainContentEditor() {
       var _this = this
-      var toolbarOptions = [
-        ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-        ['blockquote', 'code-block'],
-
-        [{ header: 1 }, { header: 2 }], // custom button values
-        [{ list: 'ordered' }, { list: 'bullet' }],
-        [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
-        [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
-        [{ direction: 'rtl' }], // text direction
-
-        [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
-        [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-        [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-        [{ font: [] }],
-        [{ align: [] }],
-
-        ['clean'] // remove formatting button
-      ]
       this.mainContentEditor = new Quill(this.$refs.mainContentEditor, {
         modules: {
-          toolbar: toolbarOptions
+          toolbar: {
+            container: [
+              ['bold', 'italic', 'underline', 'strike', 'link'],
+              ['blockquote', 'code-block'],
+              ['image', 'video'],
+              [{ header: 1 }, { header: 2 },], // custom button values
+              [{ list: 'ordered' }, { list: 'bullet' }],
+              [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
+              [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
+              [{ direction: 'rtl' }], // text direction
+              [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
+              [{ header: [1, 2, 3, 4, 5, 6, false] }],
+              [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+              [{ font: [] }],
+              [{ align: [] }],
+              ['clean'] // remove formatting button
+            ],
+            handlers: {
+              'customControl': () => { console.log('customControl was clicked') }
+            }
+          }        
         },
         //theme: 'bubble',
         theme: 'snow',
-        formats: ['bold', 'underline', 'header', 'italic', 'link'],
+        formats: [
+        'bold', 'underline','strike', 'header', 'italic',
+        'link', 'code-block' , 'blockquote',
+        'list', 'script', 'indent', 'size', 'direction',
+        'color', 'background', 'font', 'align', 
+        'image', 'video',
+        'clean'
+        ],
         placeholder: 'Type something in here!'
       })
       //register the event handler
