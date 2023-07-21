@@ -6,7 +6,46 @@ import HeroBanner from '../components/frontend/components/HeroBanner.vue'
 </script>
 
 <template>
-  <!-- <FrontendHeader />
+  <FrontendHeader />
+  <main>
+    <br />
+    <br />
+    <br />
+    <br />
+    <div class="page-section section-3">
+      <div class="container">
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Title</label>
+          <input
+            type="email"
+            class="form-control"
+            id="exampleFormControlInput1"
+            placeholder="name@example.com"
+          />
+        </div>
+        <div ref="mainContentEditor"></div>
+        <!-- <QuillEditor ref="editor" :value="this.event_detail_form.event_content" theme="snow" /> -->
+        <br />
+        <br />
+        <button type="button" class="btn btn-primary" @click="addEventDetails">Add detail</button>
+      </div>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <FrontendFooter />
+  </main>
+  <!-- 
   <main>
     <br />
     <br />
@@ -83,23 +122,103 @@ import HeroBanner from '../components/frontend/components/HeroBanner.vue'
 
 <script>
 import { mapStores, mapState, mapActions } from 'pinia'
-import { useFrontendStore } from '@/stores/frontend'
+import { useDashboardStore } from '@/stores/dashboard'
+import Quill from 'quill'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.bubble.css'
+import 'quill/dist/quill.snow.css'
 
 export default {
   name: 'about-page',
   components: {},
   data() {
-    return {}
+    return {
+      dstore: useDashboardStore(),
+      event_detail_form: {
+        event_id: '10',
+        title: '',
+        event_content: '',
+        created_by: 'AUTOBOTS',
+        updated_by: 'AUTOBOTS'
+      },
+      mainContentEditor: null,
+      mainContentEditorValue: ''
+    }
   },
   created() {},
-  mounted() {},
+  mounted() {
+    this.initMainContentEditor()
+    //call this to get article on load
+    this.getArticle()
+  },
   unmounted() {},
   methods: {
-    ...mapActions(useFrontendStore, [])
+    ...mapActions(useDashboardStore, ['tryAddEventDetail']),
+    addEventDetails() {
+      this.editor = new Quill(this.$refs.editor, {})
+      console.log(this.editor.root.innerHTML)
+      //console.log(this.event_detail_form.getHTML())
+      /* this.dstore.tryAddEventDetail(this.event_detail_form).then((res) => {
+        console.log(res)
+      }) */
+    },
+    initMainContentEditor() {
+      var _this = this
+      var toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+        ['blockquote', 'code-block'],
+
+        [{ header: 1 }, { header: 2 }], // custom button values
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
+        [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
+        [{ direction: 'rtl' }], // text direction
+
+        [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+        [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+        [{ font: [] }],
+        [{ align: [] }],
+
+        ['clean'] // remove formatting button
+      ]
+      this.mainContentEditor = new Quill(this.$refs.mainContentEditor, {
+        modules: {
+          toolbar: toolbarOptions
+        },
+        //theme: 'bubble',
+        theme: 'snow',
+        formats: ['bold', 'underline', 'header', 'italic', 'link'],
+        placeholder: 'Type something in here!'
+      })
+      //register the event handler
+      this.mainContentEditor.on('text-change', function () {
+        _this.mainContentEditorChanged()
+      })
+    },
+    //this method is called when the editor changes its value
+    mainContentEditorChanged() {
+      console.log('main content changed!')
+      //   do somethign with it like assign it to mainContentEditorValue
+      this.mainContentEditorValue = this.mainContentEditor.root.innerHTML
+    },
+    getArticle() {
+      //do the api call to get the article response.
+      //once you get the respose
+      // assign the html content to quill editor
+      // check getArticle() method on question to fill this part
+      //replace
+      //       this.$refs.mainContent.pasteHTML(
+      //     response.data.article.content
+      // );
+      // with this
+      this.mainContentEditor.root.innerHTML = 'yes yes yow'
+    }
   },
   computed: {
-    ...mapStores(useFrontendStore),
-    ...mapState(useFrontendStore, [])
+    ...mapStores(useDashboardStore),
+    ...mapState(useDashboardStore, [])
   }
 }
 </script>

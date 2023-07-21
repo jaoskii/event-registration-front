@@ -7,7 +7,8 @@ import { createPinia } from 'pinia'
 import piniaPluginPersistedState from "pinia-plugin-persistedstate"
 import router from './router'
 import Notifications from '@kyvg/vue3-notification'
-
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedState)
@@ -18,5 +19,6 @@ const app = createApp(App)
 app.use(router)
 app.use(pinia)
 app.use(Notifications)
+app.component('QuillEditor', QuillEditor)
 
 app.mount('#app')
