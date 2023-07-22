@@ -56,7 +56,7 @@ import FrontendFooter from '../components/frontend/FrontendFooter.vue'
       <div class="container">
         <div class="grid-section">
           <div class="accordion" id="accordionPanelsStayOpenExample">
-            <div class="accordion-item">
+            <div class="accordion-item event_details_bottom">
               <h2 class="accordion-header">
                 <button
                   class="accordion-button accord-title"
@@ -75,25 +75,29 @@ import FrontendFooter from '../components/frontend/FrontendFooter.vue'
                     <li><span>Registration: Until 17 May 2023 (Wednesday)</span></li>
                     <li><span>Cycling Kit Claiming (at SM City Clark)</span></li>
                     <li>
-                      <span v-if="event_details != null"
-                        >Date: {{ event_details.converted_startdate }}</span
+                      <span v-if="this.event_details != null"
+                        >Date: {{ this.event_details.primary.converted_startdate }}</span
                       >
                     </li>
                     <li>
-                      <span v-if="event_details != null"
-                        >Location: {{ event_details.event_location }}</span
+                      <span v-if="this.event_details != null"
+                        >Location: {{ this.event_details.primary.event_location }}</span
                       >
                     </li>
                     <li>
-                      <span v-if="event_details != null"
-                        >Registration Fee: Php {{ event_details.event_amount }}</span
+                      <span v-if="this.event_details != null"
+                        >Registration Fee: Php {{ this.event_details.primary.event_amount }}</span
                       >
                     </li>
                   </ul>
                 </div>
               </div>
             </div>
-            <div class="accordion-item">
+            <div
+              v-for="event_d in this.event_details.secondary"
+              :key="event_d.id"
+              class="accordion-item event_details_bottom"
+            >
               <h2 class="accordion-header">
                 <button
                   class="accordion-button accord-title"
@@ -103,52 +107,11 @@ import FrontendFooter from '../components/frontend/FrontendFooter.vue'
                   aria-expanded="false"
                   aria-controls="panelsStayOpen-collapseTwo"
                 >
-                  Sub Detail - 1
+                  {{ event_d.title }}
                 </button>
               </h2>
               <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show">
-                <div class="accordion-body">
-                  <img src="./../assets/custom/img/slide 1.png" width="100%" />
-                </div>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button
-                  class="accordion-button accord-title"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#panelsStayOpen-collapseThree"
-                  aria-expanded="false"
-                  aria-controls="panelsStayOpen-collapseThree"
-                >
-                  Sub Detail - 2
-                </button>
-              </h2>
-              <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show">
-                <div class="accordion-body">
-                  <h6 class="faq-sub">
-                    <strong class="red">Gran Fondo | 30km, 60km, 100km</strong>
-                  </h6>
-                  <p>Enjoy a safe, well-organized and timed ride with the following distances:</p>
-                  <ul class="list1">
-                    <li><span>Gran Fondo 30km - recommended for beginners</span></li>
-                    <li><span>Gran Fondo 60km - slightly condensed format than the 100km</span></li>
-                    <li><span>Gran Fondo 100km – recommended for professional cyclists</span></li>
-                  </ul>
-                  <h6 class="faq-sub"><strong class="red">Kids Ride</strong></h6>
-                  <p>A fun and friendly race for kids ages 2 to 7 years old.</p>
-                  <h6 class="faq-sub"><strong class="red">Family Fun Ride | 5km</strong></h6>
-                  <p>
-                    A group ride that the whole family can enjoy. All kinds of families are welcome!
-                  </p>
-                  <h6 class="faq-sub"><strong class="red">Virtual PRURide | 175km</strong></h6>
-                  <p>
-                    A virtual race for professional and amateur cyclists, instead of competing in a
-                    road cycling race. The cyclist finishing the 175km with the best time will be
-                    declared as this category’s winner.
-                  </p>
-                </div>
+                <div class="accordion-body" v-html="event_d.body"></div>
               </div>
             </div>
           </div>
@@ -191,16 +154,20 @@ export default {
     return {
       hangRegisterButton: false,
       fstore: useFrontendStore(),
-      event_details: null
+      event_details: {
+        primary: null,
+        secondary: []
+      }
     }
   },
   created() {
     window.addEventListener('scroll', this.handleScroll)
 
     this.fstore.tryFetchEventDetails(this.$route.params.eventid).then((res) => {
-      let details = res.data.body.details
+      let details = res.data.body
       //let registrants = res.data.body.registrants
-      this.event_details = details
+      this.event_details.primary = details.details
+      this.event_details.secondary = details.event_content_details
     })
   },
   mounted() {},

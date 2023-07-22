@@ -29,19 +29,19 @@ export const useFrontendStore = defineStore('frontendstore', {
       //NAMING CONVENTION SEMANTICS:
       //fetch + function name
       async tryLoggingIn(params = {}){
-          const url = import.meta.env.VITE_TRAQS_BACKEND_URL + 'authentication/login';
-           var formParams = new FormData();
-          
-          Object.keys(params).forEach((field_name) => {
-              formParams.append(field_name, params[field_name]);
-          });
+        const url = import.meta.env.VITE_TRAQS_BACKEND_URL + 'authentication/login';
+        var formParams = new FormData();
+        
+        Object.keys(params).forEach((field_name) => {
+            formParams.append(field_name, params[field_name]);
+        });
 
-          return await axios.post(url, formParams).then(function (data) {
-              return data;
-          }).catch(function (error) {
-              return error;
-          });
-    },
+        return await axios.post(url, formParams).then(function (data) {
+            return data;
+        }).catch(function (error) {
+            return error;
+        });
+      },
     async tryRegister(params = {}){
           const url = import.meta.env.VITE_TRAQS_BACKEND_URL + 'v1/user';
           var formParams = new FormData();
