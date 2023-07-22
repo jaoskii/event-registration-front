@@ -17,6 +17,7 @@ import HeroBanner from '../components/frontend/components/HeroBanner.vue'
         <div class="mb-3">
           <label for="exampleFormControlInput1" class="form-label">Title</label>
           <input
+            v-model="this.event_detail_form.title"
             type="email"
             class="form-control"
             id="exampleFormControlInput1"
@@ -42,7 +43,7 @@ import HeroBanner from '../components/frontend/components/HeroBanner.vue'
     <br />
     <br />
     <br />
-<!--    <FrontendFooter />-->
+    <!--    <FrontendFooter />-->
   </main>
   <!-- 
   <main>
@@ -135,10 +136,8 @@ export default {
       dstore: useDashboardStore(),
       event_detail_form: {
         event_id: '10',
-        title: '',
-        event_content: '',
-        created_by: 'AUTOBOTS',
-        updated_by: 'AUTOBOTS'
+        title: 'sample title',
+        body: ''
       },
       mainContentEditor: null,
       mainContentEditorValue: ''
@@ -154,7 +153,10 @@ export default {
   methods: {
     ...mapActions(useDashboardStore, ['tryAddEventDetail']),
     addEventDetails() {
-      console.log(this.mainContentEditorValue);
+      this.event_detail_form.body = this.mainContentEditorValue
+      this.dstore.tryAddEventDetail(this.event_detail_form).then((res) => {
+        console.log(res)
+      })
     },
     initMainContentEditor() {
       var _this = this
@@ -165,7 +167,7 @@ export default {
               ['bold', 'italic', 'underline', 'strike', 'link'],
               ['blockquote', 'code-block'],
               ['image', 'video'],
-              [{ header: 1 }, { header: 2 },], // custom button values
+              [{ header: 1 }, { header: 2 }], // custom button values
               [{ list: 'ordered' }, { list: 'bullet' }],
               [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
               [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
@@ -178,19 +180,35 @@ export default {
               ['clean'] // remove formatting button
             ],
             handlers: {
-              'customControl': () => { console.log('customControl was clicked') }
+              customControl: () => {
+                console.log('customControl was clicked')
+              }
             }
-          }        
+          }
         },
         //theme: 'bubble',
         theme: 'snow',
         formats: [
-        'bold', 'underline','strike', 'header', 'italic',
-        'link', 'code-block' , 'blockquote',
-        'list', 'script', 'indent', 'size', 'direction',
-        'color', 'background', 'font', 'align', 
-        'image', 'video',
-        'clean'
+          'bold',
+          'underline',
+          'strike',
+          'header',
+          'italic',
+          'link',
+          'code-block',
+          'blockquote',
+          'list',
+          'script',
+          'indent',
+          'size',
+          'direction',
+          'color',
+          'background',
+          'font',
+          'align',
+          'image',
+          'video',
+          'clean'
         ],
         placeholder: 'Type something in here!'
       })
