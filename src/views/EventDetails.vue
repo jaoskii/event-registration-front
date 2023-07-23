@@ -72,21 +72,33 @@ import FrontendFooter from '../components/frontend/FrontendFooter.vue'
               <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
                 <div class="accordion-body">
                   <ul class="list1">
-                    <li><span>Registration: Until 17 May 2023 (Wednesday)</span></li>
-                    <li><span>Cycling Kit Claiming (at SM City Clark)</span></li>
                     <li>
-                      <span v-if="this.event_details != null"
-                        >Date: {{ this.event_details.primary.converted_startdate }}</span
+                      <span v-if="this.event_details != null">
+                        <b>Registration:</b> Until
+                        {{ this.event_details.primary.converted_registrationend }}</span
+                      >
+                    </li>
+                    <li>
+                      <span v-if="this.event_details != null">
+                        <b>Kit Claiming: </b
+                        >{{ this.event_details.primary.kit_claim_remarks }}</span
+                      >
+                    </li>
+                    <li>
+                      <span v-if="this.event_details != null">
+                        <b>Event Start date:</b>
+                        {{ this.event_details.primary.converted_startdate }}</span
                       >
                     </li>
                     <li>
                       <span v-if="this.event_details != null"
-                        >Location: {{ this.event_details.primary.event_location }}</span
+                        ><b>Location: </b> {{ this.event_details.primary.event_location }}</span
                       >
                     </li>
                     <li>
                       <span v-if="this.event_details != null"
-                        >Registration Fee: Php {{ this.event_details.primary.event_amount }}</span
+                        ><b>Registration Fee: </b>: Php
+                        {{ this.event_details.primary.event_amount }}</span
                       >
                     </li>
                   </ul>
