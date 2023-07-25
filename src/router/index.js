@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import EventsView from '../views/EventsView.vue'
 import EventDetails from '../views/EventDetails.vue'
+import EventRegistration from '../views/EventRegistration.vue'
 
 var tokenName = import.meta.env.VITE_SITE_TOKEN_NAME;
 
@@ -67,6 +68,12 @@ const router = createRouter({
       name: 'event-details',
       //beforeEnter: requireSecureToken,
       component: EventDetails
+    },
+    {
+      path: '/event/register/:eventid',
+      name: 'event-registration',
+      //beforeEnter: requireSecureToken,
+      component: EventRegistration
     },
     {
       path: '/about',

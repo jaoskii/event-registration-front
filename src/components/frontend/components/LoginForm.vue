@@ -104,7 +104,15 @@ export default {
                   speed: 1000
                 })
 
-                this.$router.push('/')
+                if (this.fstore.lastviewedEvent != null) {
+                  let lastviewedID = this.fstore.lastviewedEvent
+                  this.fstore.$patch((state) => {
+                    state.lastviewedEvent = null
+                  })
+                  this.$router.push('/event/register/' + lastviewedID)
+                } else {
+                  this.$router.push('/')
+                }
               } else {
                 notify({
                   title: data3.title,
