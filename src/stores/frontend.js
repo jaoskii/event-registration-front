@@ -11,12 +11,14 @@ export const useFrontendStore = defineStore('frontendstore', {
         'name': '',
         'referral_code': '', */
       },
+      event_register_type: '',
       frontendBannerImages: [
         "slide1.png",
         "slide2.png",
         "slide1.png",
         "slide2.png",
       ],
+      lastviewedEvent: null,
       tkn_name: import.meta.env.VITE_SITE_TOKEN_NAME,
     }
   },

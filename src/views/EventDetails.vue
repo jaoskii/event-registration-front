@@ -13,14 +13,17 @@ import FrontendFooter from '../components/frontend/FrontendFooter.vue'
         <span class="category" v-if="event_details != null">{{
           event_details.event_category
         }}</span>
-        <h2 v-if="event_details != null">{{ event_details.event_name }}</h2>
-        <p v-if="event_details != null">{{ event_details.converted_startdate }}</p>
-        <p v-if="event_details != null">{{ event_details.event_location }}</p>
+        <h2 v-if="this.event_details != null">{{ this.event_details.primary.event_name }}</h2>
+        <p v-if="this.event_details != null">
+          {{ this.event_details.primary.converted_startdate }}
+        </p>
+        <p v-if="this.event_details != null">{{ this.event_details.event_location }}</p>
         <a
           href="#"
           class="btn btn-reg btn-default fixme"
           ref="eventRegButton"
           v-bind:class="{ 'fixed-button': hangRegisterButton }"
+          @click="proceedRegisterEvent(this.event_details.primary.id)"
           >Register now</a
         >
       </div>
@@ -31,22 +34,14 @@ import FrontendFooter from '../components/frontend/FrontendFooter.vue'
         <div class="grid-section countdown-grid">
           <h4>Event will start in</h4>
           <div class="countdown">
-            <div class="cd-item">
-              <h2>5</h2>
-              <small>day</small>
-            </div>
-            <div class="cd-item">
-              <h2>7</h2>
-              <small>hours</small>
-            </div>
-            <div class="cd-item">
-              <h2>56</h2>
-              <small>min</small>
-            </div>
-            <div class="cd-item">
-              <h2>24</h2>
-              <small>sec</small>
-            </div>
+            <Countdown
+              :deadline="this.event_details.primary.start_date"
+              countdownSize="5em"
+              mainColor="#FFFFFF"
+              secondFlipColor="#FFFFFF"
+              mainFlipBackgroundColor="#FBCE35"
+              secondFlipBackgroundColor="#FBCE35"
+            />
           </div>
         </div>
       </div>
@@ -73,30 +68,30 @@ import FrontendFooter from '../components/frontend/FrontendFooter.vue'
                 <div class="accordion-body">
                   <ul class="list1">
                     <li>
-                      <span v-if="this.event_details != null">
+                      <span v-if="this.event_details.primary != null">
                         <b>Registration:</b> Until
                         {{ this.event_details.primary.converted_registrationend }}</span
                       >
                     </li>
                     <li>
-                      <span v-if="this.event_details != null">
+                      <span v-if="this.event_details.primary != null">
                         <b>Kit Claiming: </b
                         >{{ this.event_details.primary.kit_claim_remarks }}</span
                       >
                     </li>
                     <li>
-                      <span v-if="this.event_details != null">
+                      <span v-if="this.event_details.primary != null">
                         <b>Event Start date:</b>
                         {{ this.event_details.primary.converted_startdate }}</span
                       >
                     </li>
                     <li>
-                      <span v-if="this.event_details != null"
+                      <span v-if="this.event_details.primary != null"
                         ><b>Location: </b> {{ this.event_details.primary.event_location }}</span
                       >
                     </li>
                     <li>
-                      <span v-if="this.event_details != null"
+                      <span v-if="this.event_details.primary != null"
                         ><b>Registration Fee: </b>: Php
                         {{ this.event_details.primary.event_amount }}</span
                       >
@@ -143,6 +138,53 @@ import FrontendFooter from '../components/frontend/FrontendFooter.vue'
     <br />
     <br />
   </main>
+  <div
+    class="modal fade"
+    id="otpModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="otpModalLabel"
+    aria-hidden="true"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="success-content">
+            <a
+              href="#"
+              class="md-close"
+              data-dismiss="modal"
+              aria-label="Close"
+              data-bs-dismiss="modal"
+              ><img src="./../assets/custom/img/md-close.svg"
+            /></a>
+            <h4 class="mt-32">For whom are you registering this event?</h4>
+            <div class="btn-modal mt-32">
+              <button
+                data-bs-dismiss="modal"
+                @click="forwardToEventRegistration('self')"
+                class="btn btn-md btn-full btn-default"
+              >
+                For Myself
+              </button>
+              <button
+                data-bs-dismiss="modal"
+                @click="forwardToEventRegistration('another')"
+                class="btn btn-md btn-full btn-outline mt-16"
+              >
+                For Someone else
+              </button>
+              <button data-bs-dismiss="modal" class="btn btn-md btn-full btn-outline mt-16">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <FrontendFooter />
 </template>
 
@@ -158,10 +200,14 @@ import FrontendFooter from '../components/frontend/FrontendFooter.vue'
 <script>
 import { mapStores, mapState, mapActions } from 'pinia'
 import { useFrontendStore } from '@/stores/frontend'
+import { Countdown } from 'vue3-flip-countdown'
+import { Modal } from 'bootstrap/dist/js/bootstrap.bundle.js'
 
 export default {
   name: 'eventdetails-page',
-  components: {},
+  components: {
+    Countdown
+  },
   data() {
     return {
       hangRegisterButton: false,
@@ -203,7 +249,30 @@ export default {
       }
 
       this.scrollPosition = window.scrollY
-    }
+    },
+    proceedRegisterEvent(event_id) {
+      var OTP_MODAL = new Modal(document.getElementById('otpModal'), {
+        keyboard: false
+      })
+
+      if (
+        this.fstore.userToken != null &&
+        typeof sessionStorage.getItem(this.fstore.tkn_name) !== 'undefined'
+      ) {
+        OTP_MODAL.show()
+      } else {
+        this.fstore.$patch((state) => {
+          state.lastviewedEvent = event_id
+          this.$router.push('/login')
+        })
+      }
+    },
+    forwardToEventRegistration(register_type) {
+      this.fstore.$patch((state) => {
+        state.event_register_type = register_type
+        this.$router.push('/event/register/' + this.event_details.primary.id)
+      })
+    } //end fn
   },
   computed: {
     ...mapStores(useFrontendStore),

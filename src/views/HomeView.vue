@@ -105,7 +105,6 @@ export default {
       keyboard: false
     })
 
-    this.closeModal('otpModal')
     if (Object.keys(this.fstore.logged_user) != 0) {
       if (!this.fstore.isUserActivated) {
         OTP_MODAL.show()
@@ -115,7 +114,6 @@ export default {
   methods: {
     ...mapActions(useFrontendStore, []),
     verifyOTP() {
-      this.closeModal('otpModal')
       this.fstore.tryVerifyOTP(this.otp).then((res) => {
         let resdata = res.data
         if (resdata.code == 100) {

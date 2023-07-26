@@ -9,6 +9,7 @@ import router from './router'
 import Notifications from '@kyvg/vue3-notification'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import { Countdown } from 'vue3-flip-countdown'
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedState)
@@ -19,6 +20,7 @@ const app = createApp(App)
 app.use(router)
 app.use(pinia)
 app.use(Notifications)
+app.use(Countdown)
 app.component('QuillEditor', QuillEditor)
 
 app.mount('#app')
