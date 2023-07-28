@@ -109,7 +109,7 @@ export default {
                   this.fstore.$patch((state) => {
                     state.lastviewedEvent = null
                   })
-                  this.$router.push('/event/register/' + lastviewedID)
+                  this.$router.push('/event/details/' + lastviewedID)
                 } else {
                   this.$router.push('/')
                 }
