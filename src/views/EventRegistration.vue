@@ -2,7 +2,7 @@
 /* import TheWelcome from '../components/TheWelcome.vue' */
 import FrontendHeader from '../components/frontend/FrontendHeader.vue'
 import FrontendFooter from '../components/frontend/FrontendFooter.vue'
-import EventBoxDetails from '../components/frontend/components/EventBoxDetails.vue'
+/* import EventBoxDetails from '../components/frontend/components/EventBoxDetails.vue' */
 </script>
 
 <template>
@@ -39,30 +39,17 @@ import EventBoxDetails from '../components/frontend/components/EventBoxDetails.v
                   <div class="frm">
                     <h6>Please complete all information</h6>
                     <div class="row">
-                      <div class="col-md-6">
-                        <div class="frm-grp">
-                          <label>First Name</label>
-                          <input
-                            v-model="this.registrant_form.reg_first_name"
-                            type="text"
-                            class="frm-text"
-                            placeholder="Enter first name"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="frm-grp">
-                          <label>Last Name</label>
-                          <input
-                            v-model="this.registrant_form.reg_last_name"
-                            type="text"
-                            class="frm-text"
-                            placeholder="Enter last name"
-                          />
-                        </div>
+                      <div class="frm-grp">
+                        <label>Name</label>
+                        <input
+                          v-model="this.registrant_form.reg_name"
+                          type="text"
+                          class="frm-text"
+                          placeholder="Enter last name"
+                        />
                       </div>
                     </div>
-                    <div class="frm-grp invalid">
+                    <div class="frm-grp">
                       <label>Mobile Number</label>
                       <input
                         v-model="this.registrant_form.reg_mobile"
@@ -70,11 +57,11 @@ import EventBoxDetails from '../components/frontend/components/EventBoxDetails.v
                         class="frm-text"
                         placeholder="e.g. 09201234567"
                       />
-                      <span>Invalid mobile number format</span>
+                      <!-- <span>Invalid mobile number format</span> -->
                     </div>
-                    <div class="frm-grp req">
+                    <div class="frm-grp">
                       <label>Email address</label>
-                      <small>Required</small>
+                      <!-- <small>Required</small> -->
                       <input
                         v-model="this.registrant_form.reg_email"
                         type="email"
@@ -84,13 +71,10 @@ import EventBoxDetails from '../components/frontend/components/EventBoxDetails.v
                     </div>
                     <div class="frm-grp">
                       <label>Birth Date</label>
-                      <input
+                      <VueDatePicker
                         v-model="this.registrant_form.reg_birthday"
-                        type="text"
-                        class="frm-text"
-                        placeholder="mm/dd/yyyy"
+                        :enable-time-picker="false"
                       />
-                      <img src="img/calendar.svg" class="calendar" />
                     </div>
                     <!-- <div class="frm-grp">
                                                 <label>Gender</label>
@@ -102,36 +86,36 @@ import EventBoxDetails from '../components/frontend/components/EventBoxDetails.v
                                             </div> -->
 
                     <div class="frm-grp">
-                      <label>Province</label>
-                      <select
-                        class="form-select form-select-lg mb-3"
-                        aria-label="Large select example"
-                      >
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                      <label>Province <span class="red">*</span></label>
+                      <select v-model="registrant_form.reg_province" class="form-select">
+                        <option v-for="opt in province_options" :key="opt.id" :value="opt.value">
+                          {{ opt.text }}
+                        </option>
                       </select>
                     </div>
                     <div class="frm-grp">
-                      <label>Town/City</label>
-                      <select
-                        class="form-select form-select-lg mb-3"
-                        aria-label="Large select example"
-                      >
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                      <label>Town/City <span class="red">*</span></label>
+                      <select v-model="registrant_form.reg_town" class="form-select">
+                        <option v-for="opt in town_options" :key="opt.id" :value="opt.value">
+                          {{ opt.text }}
+                        </option>
                       </select>
                     </div>
                     <div class="frm-grp">
                       <label>Emergency Contact</label>
-                      <textarea class="frm-text"></textarea>
+                      <textarea
+                        v-model="registrant_form.reg_emergency_contact"
+                        class="frm-text"
+                      ></textarea>
                     </div>
                     <div class="frm-grp">
                       <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1" />
+                        <input
+                          type="checkbox"
+                          class="form-check-input"
+                          id="exampleCheck1"
+                          :checked="registrant_form.terms_agree"
+                        />
                         <span class="form-check-label check-label" for="exampleCheck1">
                           I agree to the Terms and Conditions
                         </span>
@@ -142,6 +126,7 @@ import EventBoxDetails from '../components/frontend/components/EventBoxDetails.v
                         class="btn btn-reg btn-default btn-full"
                         data-toggle="modal"
                         data-target="#redirect"
+                        @click="registerToEvent()"
                       >
                         Proceed to payment
                       </button>
@@ -183,10 +168,14 @@ import EventBoxDetails from '../components/frontend/components/EventBoxDetails.v
 <script>
 import { mapStores, mapState, mapActions } from 'pinia'
 import { useFrontendStore } from '@/stores/frontend'
+import VueDatePicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
+import { useNotification } from '@kyvg/vue3-notification'
+const { notify } = useNotification()
 
 export default {
   name: 'index-page',
-  components: {},
+  components: { VueDatePicker },
   data() {
     return {
       fstore: useFrontendStore(),
@@ -196,17 +185,26 @@ export default {
       },
       registrant_form: {
         event_id: '',
-        user_id: '',
         reg_type: '',
-        reg_first_name: '',
-        reg_last_name: '',
+        reg_name: '',
         reg_mobile: '',
         reg_email: '',
         reg_birthday: '',
         reg_province: '',
         reg_town: '',
-        reg_emergency_contact: ''
-      }
+        reg_emergency_contact: '',
+        terms_agree: true
+      },
+      province_options: [
+        { id: 'pindex-0', value: null, text: 'Select province' },
+        { id: 'pindex-1', value: 'PROVINCE A', text: 'PROVINCE A' },
+        { id: 'pindex-2', value: 'PROVINCE B', text: 'PROVINCE B' }
+      ],
+      town_options: [
+        { id: 'tindex-0', value: null, text: 'Select town' },
+        { id: 'tindex-1', value: 'TOWN A', text: 'TOWN A' },
+        { id: 'tindex-2', value: 'TOWN B', text: 'TOWN B' }
+      ]
     }
   },
   created() {},
@@ -218,12 +216,52 @@ export default {
       this.event_details.secondary = details.event_content_details
     })
 
-    /* if (this.fstore.event_register_type == 'self') {
-    } else {
-    } */ //end if
+    this.registrant_form.reg_type = this.fstore.event_register_type
+    this.registrant_form.event_id = this.$route.params.eventid
+
+    if (this.fstore.event_register_type == 'self') {
+      this.registrant_form.reg_name = this.fstore.logged_user.name
+      this.registrant_form.reg_mobile = this.fstore.logged_user.mobile
+      this.registrant_form.reg_email = this.fstore.logged_user.email
+      this.registrant_form.reg_birthday = this.$route.params.eventid
+      this.registrant_form.reg_province = this.fstore.logged_user.province
+      this.registrant_form.reg_town = this.fstore.logged_user.city
+      this.registrant_form.reg_emergency_contact = '09289322886'
+    } //end if
   },
   methods: {
-    ...mapActions(useFrontendStore, ['tryFetchEventDetails'])
+    ...mapActions(useFrontendStore, ['tryFetchEventDetails', 'tryRegisterEvent']),
+    registerToEvent() {
+      this.fstore.tryRegisterEvent(this.registrant_form).then((res) => {
+        let response = res.data
+        if (response.status) {
+          notify({
+            title: 'REGISTRATION SUCCESSFULL',
+            text: response.msg,
+            type: 'info',
+            duration: 10000,
+            speed: 1000
+          })
+
+          Object.keys(this.registrant_form).forEach((x) => {
+            if (x == 'terms_agree') {
+              this.registrant_form[x] = false
+            } else {
+              this.registrant_form[x] = ''
+            } //end if
+          })
+        } else {
+          notify({
+            title: 'REGISTRATION FAILED',
+            text: response.msg,
+            type: 'error',
+            duration: 10000,
+            speed: 1000
+          })
+        } //end fn
+        let details = res.data.body
+      })
+    } //end fn
   },
   computed: {
     ...mapStores(useFrontendStore),

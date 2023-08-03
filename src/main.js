@@ -10,6 +10,8 @@ import Notifications from '@kyvg/vue3-notification'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import { Countdown } from 'vue3-flip-countdown'
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedState)
@@ -21,6 +23,8 @@ app.use(router)
 app.use(pinia)
 app.use(Notifications)
 app.use(Countdown)
+
+app.component('VueDatePicker', VueDatePicker);
 app.component('QuillEditor', QuillEditor)
 
 app.mount('#app')
