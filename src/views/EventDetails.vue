@@ -160,9 +160,14 @@ import FrontendFooter from '../components/frontend/FrontendFooter.vue'
               data-bs-dismiss="modal"
               ><img src="./../assets/custom/img/md-close.svg"
             /></a>
-            <h4 class="mt-32">For whom are you registering this event?</h4>
+            <h4 v-if="!this.is_registered" class="mt-32">
+              For whom are you registering this event?
+            </h4>
+            <h4 v-if="this.is_registered">You are already registered to this event.</h4>
+            <p v-if="this.is_registered">Would you like to register someone else?</p>
             <div class="btn-modal mt-32">
               <button
+                v-if="!this.is_registered"
                 data-bs-dismiss="modal"
                 @click="forwardToEventRegistration('self')"
                 class="btn btn-md btn-full btn-default"
@@ -212,6 +217,7 @@ export default {
     return {
       hangRegisterButton: false,
       fstore: useFrontendStore(),
+      is_registered: false,
       event_details: {
         primary: null,
         secondary: []
@@ -223,17 +229,23 @@ export default {
 
     this.fstore.tryFetchEventDetails(this.$route.params.eventid).then((res) => {
       let details = res.data.body
-      //let registrants = res.data.body.registrants
       this.event_details.primary = details.details
       this.event_details.secondary = details.event_content_details
     })
   },
-  mounted() {},
+  mounted() {
+    let self = this
+    let params = { event_id: this.$route.params.eventid }
+    this.fstore.tryCheckAlreadyRegistered(params).then((res) => {
+      var returndata = res.data
+      this.is_registered = returndata.body.is_registered
+    })
+  },
   unmounted() {
     window.removeEventListener('scroll', this.handleScroll)
   },
   methods: {
-    ...mapActions(useFrontendStore, ['tryFetchEventDetails']),
+    ...mapActions(useFrontendStore, ['tryFetchEventDetails', 'tryCheckAlreadyRegistered']),
     handleScroll() {
       var currentScrollPosition = window.scrollY
       if (currentScrollPosition < this.scrollPosition) {

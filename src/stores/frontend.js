@@ -11,7 +11,7 @@ export const useFrontendStore = defineStore('frontendstore', {
         'name': '',
         'referral_code': '', */
       },
-      event_register_type: '',
+      event_register_type: null,
       frontendBannerImages: [
         "slide1.png",
         "slide2.png",
@@ -129,8 +129,38 @@ export const useFrontendStore = defineStore('frontendstore', {
               return error;
           });
     },
+    async tryRegisterEvent(params = {}){
+      const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/user/events/register';
+      let config = {
+      headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          "Access-Control-Allow-Origin": "*",
+          'Authorization': this.userToken
+        }
+      };
 
+      return await axios.post(url, params, config).then(function (data) {
+          return data;
+      }).catch(function (error) {
+          return error;
+      });
+    },
+    async tryCheckAlreadyRegistered(params = {}){
+      const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/user/events/is_registered';
+      let config = {
+      headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          "Access-Control-Allow-Origin": "*",
+          'Authorization': this.userToken
+        }
+      };
 
+      return await axios.post(url, params, config).then(function (data) {
+          return data;
+      }).catch(function (error) {
+          return error;
+      });
+    }//end fn
   },
   persist: {
     storage: sessionStorage, // data in sessionStorage is cleared when the page session ends.
