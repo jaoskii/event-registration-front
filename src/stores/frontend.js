@@ -145,17 +145,31 @@ export const useFrontendStore = defineStore('frontendstore', {
           return error;
       });
     },
-    async tryCheckAlreadyRegistered(params = {}){
-      const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/user/events/is_registered';
+    async tryFetchAbout(fetch_type){
+      const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/public/about/' + fetch_type;
       let config = {
       headers: {
           'Content-Type': 'application/json;charset=UTF-8',
           "Access-Control-Allow-Origin": "*",
-          'Authorization': this.userToken
         }
       };
 
-      return await axios.post(url, params, config).then(function (data) {
+      return await axios.post(url, config).then(function (data) {
+          return data;
+      }).catch(function (error) {
+          return error;
+      });
+    },//end fn
+    async tryFetchFooterDetails(){
+      const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/public/footer-details';
+      let config = {
+      headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          "Access-Control-Allow-Origin": "*",
+        }
+      };
+
+      return await axios.post(url, config).then(function (data) {
           return data;
       }).catch(function (error) {
           return error;

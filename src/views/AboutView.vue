@@ -6,8 +6,7 @@ import HeroBanner from '../components/frontend/components/HeroBanner.vue'
 </script>
 
 <template>
-  <!--<FrontendHeader />-->
-  <main>
+  <!--   <main>
     <br />
     <br />
     <br />
@@ -43,50 +42,46 @@ import HeroBanner from '../components/frontend/components/HeroBanner.vue'
     <br />
     <br />
     <br />
-    <!--    <FrontendFooter />-->
-  </main>
-  <!-- 
+  </main> -->
+
   <main>
+    <FrontendHeader />
     <br />
     <br />
     <br />
     <br />
-    <div class="page-section section-3">
+    <div v-if="this.about != null" class="page-section section-3">
       <div class="container">
         <div class="grid-section">
           <div class="row">
             <div class="col-md-6">
-              <h3>About Coco Running</h3>
+              <h3>{{ this.about[0].title }}</h3>
               <p class="p">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                {{ this.about[0].content }}
               </p>
             </div>
             <div class="col-md-6">
               <div class="img-holder">
-                <img src="./../assets/custom/img/about-img.png" />
+                <img :src="getImageUrl(this.about[0].image)" />
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="page-section section-2">
+    <div v-if="this.about != null" class="page-section section-2">
       <div class="container">
         <div class="grid-section">
           <div class="row">
             <div class="col-md-6">
               <div class="img-holder">
-                <img src="./../assets/custom/img/about-img.png" />
+                <img :src="getImageUrl(this.about[1].image)" />
               </div>
             </div>
             <div class="col-md-6">
-              <h3>About Coco Running</h3>
+              <h3>{{ this.about[1].title }}</h3>
               <p class="p">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                {{ this.about[1].content }}
               </p>
             </div>
           </div>
@@ -108,7 +103,7 @@ import HeroBanner from '../components/frontend/components/HeroBanner.vue'
     <br />
     <br />
   </main>
-  <FrontendFooter /> -->
+  <FrontendFooter />
 </template>
 
 <style lang="scss">
@@ -122,18 +117,22 @@ import HeroBanner from '../components/frontend/components/HeroBanner.vue'
 
 <script>
 import { mapStores, mapState, mapActions } from 'pinia'
-import { useDashboardStore } from '@/stores/dashboard'
-import Quill from 'quill'
+/* import { useDashboardStore } from '@/stores/dashboard' */
+import { useFrontendStore } from '@/stores/frontend'
+
+/* import Quill from 'quill'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.bubble.css'
-import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.snow.css' */
 
 export default {
   name: 'about-page',
   components: {},
   data() {
     return {
-      dstore: useDashboardStore(),
+      /* dstore: useDashboardStore(), */
+      fstore: useFrontendStore(),
+      about: null,
       event_detail_form: {
         event_id: '10',
         title: 'sample title',
@@ -143,16 +142,28 @@ export default {
       mainContentEditorValue: ''
     }
   },
-  created() {},
+  created() {
+    this.fstore.tryFetchAbout('full').then((res) => {
+      if (res.data.status) {
+        this.about = res.data.body
+      } else {
+        console.log('About is empty, Please set it on the backend')
+      } //end if
+    })
+  },
   mounted() {
-    this.initMainContentEditor()
+    /* this.initMainContentEditor()
     //call this to get article on load
-    this.getArticle()
+    this.getArticle() */
   },
   unmounted() {},
   methods: {
-    ...mapActions(useDashboardStore, ['tryAddEventDetail']),
-    addEventDetails() {
+    /* ...mapActions(useDashboardStore, ['tryAddEventDetail']), */
+    ...mapActions(useFrontendStore, ['tryFetchAbout']),
+    getImageUrl(filename) {
+      return new URL(`./../assets/custom/img/` + filename, import.meta.url).href
+    }
+    /* addEventDetails() {
       this.event_detail_form.body = this.mainContentEditorValue
       this.dstore.tryAddEventDetail(this.event_detail_form).then((res) => {
         console.log(res)
@@ -234,11 +245,13 @@ export default {
       // );
       // with this
       this.mainContentEditor.root.innerHTML = 'yes yes yow'
-    }
+    } */
   },
   computed: {
-    ...mapStores(useDashboardStore),
-    ...mapState(useDashboardStore, [])
+    /* ...mapStores(useDashboardStore),
+    ...mapState(useDashboardStore, []), */
+    ...mapStores(useFrontendStore),
+    ...mapState(useFrontendStore, [])
   }
 }
 </script>

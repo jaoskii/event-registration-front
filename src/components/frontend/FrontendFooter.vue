@@ -4,24 +4,31 @@
       <div class="container">
         <div class="row">
           <div class="col-md-8">
-            <p>Copyright © 2023 Coco Running. All rights reserved.</p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-              dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            <p v-if="this.footer_details != null">{{ this.footer_details.copyright }}</p>
+            <p v-if="this.footer_details != null">
+              {{ this.footer_details.detail_1 }}
             </p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            <p v-if="this.footer_details != null">
+              {{ this.footer_details.detail_2 }}
             </p>
           </div>
           <div class="col-md-4">
-            <div class="social">
-              <a href="#"><img src="./../../assets/custom/img/fb.svg" /></a>
-              <a href="#"><img src="./../../assets/custom/img/ig.svg" /></a>
-              <a href="#"><img src="./../../assets/custom/img/tw.svg" /></a>
+            <div class="social" v-if="this.footer_details != null">
+              <a href="#"
+                ><img
+                  v-if="this.footer_details.is_enabled_twitter"
+                  src="./../../assets/custom/img/fb.svg"
+              /></a>
+              <a href="#"
+                ><img
+                  v-if="this.footer_details.is_enabled_facebook"
+                  src="./../../assets/custom/img/ig.svg"
+              /></a>
+              <a href="#"
+                ><img
+                  v-if="this.footer_details.is_enabled_instagram"
+                  src="./../../assets/custom/img/tw.svg"
+              /></a>
             </div>
             <div class="powered">
               <h4>Powered by</h4>
@@ -33,4 +40,36 @@
     </div>
   </footer>
 </template>
->
+
+<script>
+import { mapStores, mapState, mapActions } from 'pinia'
+import { useFrontendStore } from '@/stores/frontend'
+
+export default {
+  name: 'about-page',
+  components: {},
+  data() {
+    return {
+      fstore: useFrontendStore(),
+      footer_details: null
+    }
+  },
+  created() {},
+  mounted() {
+    this.fstore.tryFetchFooterDetails().then((res) => {
+      if (res.data.status) {
+        this.footer_details = res.data.body
+      } else {
+        console.log('Footer details is empty, Please set it on the backend')
+      } //end if
+    })
+  },
+  unmounted() {},
+  methods: {
+    ...mapActions(useFrontendStore, ['tryFetchFooterDetails'])
+  },
+  computed: {
+    ...mapStores(useFrontendStore)
+  }
+}
+</script>

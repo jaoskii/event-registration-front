@@ -4,15 +4,13 @@
       <div class="grid-section">
         <div class="row">
           <div class="col-md-6">
-            <h3>About Coco Running</h3>
-            <p class="p">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            <h3 v-if="this.short_about != null">{{ this.short_about.title }}</h3>
+            <p class="p" v-if="this.short_about != null">
+              {{ this.short_about.content }}
             </p>
-            <button class="btn btn-reg btn-default" onclick="location.href = 'about.html';">
-              Learn more
-            </button>
+            <router-link to="/about" class="navlink"
+              ><button class="btn btn-reg btn-default">Learn more</button>
+            </router-link>
           </div>
           <div class="col-md-6">
             <div class="img-holder">
@@ -24,3 +22,36 @@
     </div>
   </div>
 </template>
+
+<script>
+import { mapStores, mapState, mapActions } from 'pinia'
+import { useFrontendStore } from '@/stores/frontend'
+
+export default {
+  name: 'about-page',
+  components: {},
+  data() {
+    return {
+      fstore: useFrontendStore(),
+      short_about: null
+    }
+  },
+  created() {},
+  mounted() {
+    this.fstore.tryFetchAbout('short').then((res) => {
+      if (res.data.status) {
+        this.short_about = res.data.body
+      } else {
+        console.log('About is empty, Please set it on the backend')
+      } //end if
+    })
+  },
+  unmounted() {},
+  methods: {
+    ...mapActions(useFrontendStore, ['tryFetchAbout'])
+  },
+  computed: {
+    ...mapStores(useFrontendStore)
+  }
+}
+</script>
