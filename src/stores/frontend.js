@@ -11,6 +11,7 @@ export const useFrontendStore = defineStore('frontendstore', {
         'name': '',
         'referral_code': '', */
       },
+      selectedNav: 'home-nav',
       event_register_type: null,
       frontendBannerImages: [
         "slide1.png",
@@ -60,6 +61,22 @@ export const useFrontendStore = defineStore('frontendstore', {
               return error;
           });
     },
+    async tryCheckAlreadyRegistered(params = {}){
+      const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/user/events/is_registered';
+      let config = {
+      headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          "Access-Control-Allow-Origin": "*",
+          'Authorization': this.userToken
+        }
+      };
+
+      return await axios.post(url, params, config).then(function (data) {
+          return data;
+      }).catch(function (error) {
+          return error;
+      });
+    },//end fn
     async tryGetUserProfile(){
           const url = import.meta.env.VITE_TRAQS_BACKEND_URL + 'v1/user/me';
         

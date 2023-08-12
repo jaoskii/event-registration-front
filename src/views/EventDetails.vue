@@ -19,6 +19,7 @@ import FrontendFooter from '../components/frontend/FrontendFooter.vue'
         </p>
         <p v-if="this.event_details != null">{{ this.event_details.event_location }}</p>
         <a
+          v-if="!this.event_details.primary.is_registration_ended"
           href="#"
           class="btn btn-reg btn-default fixme"
           ref="eventRegButton"
@@ -31,7 +32,36 @@ import FrontendFooter from '../components/frontend/FrontendFooter.vue'
 
     <div class="page-section section-3">
       <div class="container">
-        <div class="grid-section countdown-grid">
+        <div
+          v-if="
+            this.event_details.primary.is_ended == false &&
+            this.event_details.primary.is_registration_ended == false &&
+            this.event_details.primary.is_ended == false
+          "
+          class="grid-section countdown-grid"
+        >
+          <h4>Event registration will end in</h4>
+          <div class="countdown">
+            <Countdown
+              :deadline="this.event_details.primary.registration_end"
+              countdownSize="5em"
+              mainColor="#FFFFFF"
+              secondFlipColor="#FFFFFF"
+              mainFlipBackgroundColor="#FBCE35"
+              secondFlipBackgroundColor="#FBCE35"
+            />
+          </div>
+        </div>
+
+        <div
+          v-if="
+            this.event_details.primary.is_started == false &&
+            this.event_details.primary.is_registration_ended == true &&
+            this.event_details.primary.is_ended == false
+          "
+          class="grid-section countdown-grid"
+        >
+          <h4>Event Registration already ended</h4>
           <h4>Event will start in</h4>
           <div class="countdown">
             <Countdown
@@ -43,6 +73,39 @@ import FrontendFooter from '../components/frontend/FrontendFooter.vue'
               secondFlipBackgroundColor="#FBCE35"
             />
           </div>
+        </div>
+
+        <div
+          v-if="
+            this.event_details.primary.is_started == true &&
+            this.event_details.primary.is_registration_ended == true &&
+            this.event_details.primary.is_ended == false
+          "
+          class="grid-section countdown-grid"
+        >
+          <h4>Event already started</h4>
+          <h4>Event will end in</h4>
+          <div class="countdown">
+            <Countdown
+              :deadline="this.event_details.primary.end_date"
+              countdownSize="5em"
+              mainColor="#FFFFFF"
+              secondFlipColor="#FFFFFF"
+              mainFlipBackgroundColor="#FBCE35"
+              secondFlipBackgroundColor="#FBCE35"
+            />
+          </div>
+        </div>
+
+        <div
+          v-if="
+            this.event_details.primary.is_started == true &&
+            this.event_details.primary.is_registration_ended == true &&
+            this.event_details.primary.is_ended == true
+          "
+          class="grid-section countdown-grid"
+        >
+          <h4>This event already ended.</h4>
         </div>
       </div>
     </div>
@@ -234,7 +297,6 @@ export default {
     })
   },
   mounted() {
-    let self = this
     let params = { event_id: this.$route.params.eventid }
     this.fstore.tryCheckAlreadyRegistered(params).then((res) => {
       var returndata = res.data

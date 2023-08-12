@@ -7,9 +7,15 @@
         </div>
         <nav>
           <ul class="nav-web">
-            <li class="active"><router-link to="/" class="navlink">Home</router-link></li>
-            <li><router-link to="/about" class="navlink">About Us</router-link></li>
-            <li><router-link to="/events" class="navlink">Events</router-link></li>
+            <li class="head-navs" id="home-nav" @click="changeFocusMenu('home-nav')">
+              <router-link to="/" class="navlink">Home</router-link>
+            </li>
+            <li class="head-navs" id="about-nav" @click="changeFocusMenu('about-nav')">
+              <router-link to="/about" class="navlink">About Us</router-link>
+            </li>
+            <li class="head-navs" id="event-nav" @click="changeFocusMenu('event-nav')">
+              <router-link to="/events" class="navlink">Events</router-link>
+            </li>
             <!-- <li><router-link to="/results">Results</router-link></li> -->
           </ul>
 
@@ -91,7 +97,9 @@ export default {
       this.showProfileDropdown = true
     }
   },
-  mounted() {},
+  mounted() {
+    this.setActiveMenu()
+  },
   methods: {
     ...mapActions(useFrontendStore, []),
     logoutAccount() {
@@ -113,6 +121,20 @@ export default {
         state.viewRegisterForm = false
         this.$router.push('/login')
       })
+    },
+    changeFocusMenu(navid) {
+      this.fstore.$patch((state) => {
+        var collection = document.getElementsByClassName('head-navs')
+        for (let i = 0; i < collection.length; i++) {
+          collection[i].classList.remove('active')
+        }
+        state.selectedNav = navid
+        this.setActiveMenu()
+      })
+    },
+    setActiveMenu() {
+      var element = document.getElementById(this.fstore.selectedNav)
+      element.classList.add('active')
     } //end fn //end fn
   },
   computed: {

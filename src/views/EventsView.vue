@@ -31,17 +31,6 @@ import EventBoxDetails from '../components/frontend/components/EventBoxDetails.v
           </div>
           <div class="row">
             <EventBoxDetails />
-            <EventBoxDetails />
-            <EventBoxDetails />
-            <EventBoxDetails />
-            <EventBoxDetails />
-            <EventBoxDetails />
-            <EventBoxDetails />
-            <EventBoxDetails />
-            <EventBoxDetails />
-            <EventBoxDetails />
-            <EventBoxDetails />
-            <EventBoxDetails />
           </div>
         </div>
       </div>

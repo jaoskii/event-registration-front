@@ -2,7 +2,10 @@
   <div class="page-section">
     <div class="container">
       <div class="grid-section">
-        <h3>Upcoming Events <a class="btn btn-sm btn-secondary">View all</a></h3>
+        <h3>
+          Upcoming Events
+          <router-link to="events/" class="btn btn-sm btn-secondary"> View all </router-link>
+        </h3>
         <div class="row justify-content-center">
           <div class="col-md-4" v-for="up_event in events.upcoming" :key="up_event.id">
             <div class="event-item">
@@ -27,7 +30,10 @@
         </div>
       </div>
       <div class="grid-section mt-48">
-        <h3>Past Events <a class="btn btn-sm btn-secondary">View all</a></h3>
+        <h3>
+          Past Events
+          <router-link to="events/" class="btn btn-sm btn-secondary"> View all </router-link>
+        </h3>
         <div class="row justify-content-center">
           <div class="col-md-4" v-for="fin_event in events.finished" :key="fin_event.id">
             <div class="event-item">
@@ -72,10 +78,10 @@ export default {
       }
     }
   },
-  created() {},
-  mounted() {
+  created() {
     this.getEvents()
   },
+  mounted() {},
   methods: {
     ...mapActions(useFrontendStore, ['tryFetchEvents']),
     getEvents() {

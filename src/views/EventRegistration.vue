@@ -186,13 +186,13 @@ export default {
       registrant_form: {
         event_id: '',
         reg_type: '',
-        reg_name: '',
-        reg_mobile: '',
-        reg_email: '',
+        reg_name: 'Rajhi Johnny Masta',
+        reg_mobile: '09289288556',
+        reg_email: 'tamlaylovestokwa@gmail.com',
         reg_birthday: '',
         reg_province: '',
         reg_town: '',
-        reg_emergency_contact: '',
+        reg_emergency_contact: 'Princess - 0929222nog2nog',
         terms_agree: true
       },
       province_options: [
@@ -235,6 +235,14 @@ export default {
       this.fstore.tryRegisterEvent(this.registrant_form).then((res) => {
         let response = res.data
         if (response.status) {
+          Object.keys(this.registrant_form).forEach((x) => {
+            if (x == 'terms_agree') {
+              this.registrant_form[x] = false
+            } else {
+              this.registrant_form[x] = ''
+            } //end if
+          })
+
           notify({
             title: 'REGISTRATION SUCCESSFULL',
             text: response.msg,
@@ -243,13 +251,17 @@ export default {
             speed: 1000
           })
 
-          Object.keys(this.registrant_form).forEach((x) => {
-            if (x == 'terms_agree') {
-              this.registrant_form[x] = false
-            } else {
-              this.registrant_form[x] = ''
-            } //end if
+          notify({
+            title: 'REDIRECTING..',
+            text: 'Redirecting to payment portal...',
+            type: 'info',
+            duration: 10000,
+            speed: 1000
           })
+
+          console.log(response.body.payment_redirect.redirectUrl)
+          //this.$router.push('')
+          window.location.replace(response.body.payment_redirect.redirectUrl)
         } else {
           notify({
             title: 'REGISTRATION FAILED',
@@ -259,7 +271,6 @@ export default {
             speed: 1000
           })
         } //end fn
-        let details = res.data.body
       })
     } //end fn
   },
