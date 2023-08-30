@@ -4,6 +4,8 @@ import LoginView from '../views/LoginView.vue'
 import EventsView from '../views/EventsView.vue'
 import EventDetails from '../views/EventDetails.vue'
 import EventRegistration from '../views/EventRegistration.vue'
+import PaymentRedirect from '../views/PaymentRedirect.vue'
+import MyProfile from '../views/MyProfile.vue'
 
 var tokenName = import.meta.env.VITE_SITE_TOKEN_NAME;
 
@@ -66,14 +68,26 @@ const router = createRouter({
     {
       path: '/event/details/:eventid',
       name: 'event-details',
-      //beforeEnter: requireSecureToken,
+      //--beforeEnter: requireSecureToken,
       component: EventDetails
     },
     {
       path: '/event/register/:eventid',
       name: 'event-registration',
-      //beforeEnter: requireSecureToken,
+      beforeEnter: requireSecureToken,
       component: EventRegistration
+    },
+    {
+      path: '/pay/:regcode/:status',
+      name: 'pay-status-page',
+      beforeEnter: requireSecureToken,
+      component: PaymentRedirect
+    },
+    {
+      path: '/myprofile',
+      name: 'my-profile',
+      beforeEnter: requireSecureToken,
+      component: MyProfile
     },
     {
       path: '/about',

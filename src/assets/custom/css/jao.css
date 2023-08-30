@@ -31,3 +31,12 @@
 .event_details_bottom{
     margin-bottom: 1%;
 }
+
+.client_email_warn{
+    color: red;
+    font-weight: bold;
+}
+
+.event_reg_code{
+    color:red;
+}

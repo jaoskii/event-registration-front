@@ -146,8 +146,30 @@ export const useFrontendStore = defineStore('frontendstore', {
               return error;
           });
     },
+
+     async tryFetchRegistrationDetails(reg_code){
+          const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/user/registration/details/' + reg_code;
+          var formParams = new FormData();
+          let config = {
+          headers: {
+              'Content-Type': 'application/json;charset=UTF-8',
+              "Access-Control-Allow-Origin": "*",
+              'Authorization': this.userToken
+            }
+          };
+          return await axios.post(url, formParams, config).then(function (data) {
+              return data;
+          }).catch(function (error) {
+              return error;
+          });
+    },
+
     async tryRegisterEvent(params = {}){
       const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/user/events/register';
+      const myhost = import.meta.env.VITE_SITE_MYHOST;
+      
+      params['client_host'] = myhost;
+      
       let config = {
       headers: {
           'Content-Type': 'application/json;charset=UTF-8',
@@ -172,6 +194,15 @@ export const useFrontendStore = defineStore('frontendstore', {
       };
 
       return await axios.post(url, config).then(function (data) {
+          return data;
+      }).catch(function (error) {
+          return error;
+      });
+    },//end fn
+    async tryFetchSponsors(){
+      const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/public/sponsors';
+
+      return await axios.post(url).then(function (data) {
           return data;
       }).catch(function (error) {
           return error;

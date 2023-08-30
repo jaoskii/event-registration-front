@@ -259,8 +259,6 @@ export default {
             speed: 1000
           })
 
-          console.log(response.body.payment_redirect.redirectUrl)
-          //this.$router.push('')
           window.location.replace(response.body.payment_redirect.redirectUrl)
         } else {
           notify({

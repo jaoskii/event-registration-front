@@ -29,7 +29,7 @@
               <div class="account-drp">
                 <ul>
                   <li>
-                    <router-link to="/profile" class="navlink">
+                    <router-link to="/myprofile" class="navlink">
                       <img src="./../../assets/custom/img/nav/user.svg" /> My Account
                     </router-link>
                   </li>
