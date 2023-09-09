@@ -14,13 +14,14 @@ export const useFrontendStore = defineStore('frontendstore', {
       selectedNav: 'home-nav',
       event_register_type: null,
       frontendBannerImages: [
-        "slide1.png",
-        "slide2.png",
-        "slide1.png",
-        "slide2.png",
+        "slide-1.png",
+        "slide-2.png",
+        "slide-1.png",
+        "slide-2.png",
       ],
       lastviewedEvent: null,
       tkn_name: import.meta.env.VITE_SITE_TOKEN_NAME,
+      cx_id: import.meta.env.VITE_CLIENT_ID
     }
   },
   getters: {
@@ -63,6 +64,7 @@ export const useFrontendStore = defineStore('frontendstore', {
     },
     async tryCheckAlreadyRegistered(params = {}){
       const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/user/events/is_registered';
+      params['cx_id'] = this.cx_id;
       let config = {
       headers: {
           'Content-Type': 'application/json;charset=UTF-8',
@@ -79,7 +81,7 @@ export const useFrontendStore = defineStore('frontendstore', {
     },//end fn
     async tryGetUserProfile(){
           const url = import.meta.env.VITE_TRAQS_BACKEND_URL + 'v1/user/me';
-        
+          
           let config = {
             headers: {
                 'Authorization': this.userToken,
@@ -119,12 +121,10 @@ export const useFrontendStore = defineStore('frontendstore', {
               return error;
           });
     },
-
-
     async tryFetchEvents(params){
           const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/public/events';
           var formParams = new FormData();
-          
+          params['cx_id'] = this.cx_id;
           Object.keys(params).forEach((field_name) => {
             formParams.append(field_name, params[field_name]);
           });
@@ -139,7 +139,7 @@ export const useFrontendStore = defineStore('frontendstore', {
     async tryFetchEventDetails(eventid){
           const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/public/events/details/' + eventid;
           var formParams = new FormData();
-        
+          formParams.append('cx_id', this.cx_id);
           return await axios.post(url, formParams).then(function (data) {
               return data;
           }).catch(function (error) {
@@ -150,6 +150,7 @@ export const useFrontendStore = defineStore('frontendstore', {
      async tryFetchRegistrationDetails(reg_code){
           const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/user/registration/details/' + reg_code;
           var formParams = new FormData();
+          formParams.append('cx_id', this.cx_id);
           let config = {
           headers: {
               'Content-Type': 'application/json;charset=UTF-8',
@@ -177,13 +178,61 @@ export const useFrontendStore = defineStore('frontendstore', {
           'Authorization': this.userToken
         }
       };
-
+      params['cx_id'] = this.cx_id;
       return await axios.post(url, params, config).then(function (data) {
           return data;
       }).catch(function (error) {
           return error;
       });
     },
+    async tryFetchBanners(){
+      const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/public/banners/';
+      let config = {
+      headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          "Access-Control-Allow-Origin": "*",
+        }
+      };
+      let params = {};
+      params['cx_id'] = this.cx_id;
+      return await axios.post(url, params, config).then(function (data) {
+          return data;
+      }).catch(function (error) {
+          return error;
+      });
+    },//end fn
+    async tryFetchUserRegistrations(){
+      const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/user/registrations/';
+      let config = {
+      headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          "Access-Control-Allow-Origin": "*",
+        }
+      };
+      let params = {};
+      params['cx_id'] = this.cx_id;
+      return await axios.post(url, params, config).then(function (data) {
+          return data;
+      }).catch(function (error) {
+          return error;
+      });
+    },
+    async tryFetchUserPaymentHistory(){
+      const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/user/payment_history/';
+      let config = {
+      headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          "Access-Control-Allow-Origin": "*",
+        }
+      };
+      let params = {};
+      params['cx_id'] = this.cx_id;
+      return await axios.post(url, params, config).then(function (data) {
+          return data;
+      }).catch(function (error) {
+          return error;
+      });
+    },//end fn
     async tryFetchAbout(fetch_type){
       const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/public/about/' + fetch_type;
       let config = {
@@ -192,8 +241,9 @@ export const useFrontendStore = defineStore('frontendstore', {
           "Access-Control-Allow-Origin": "*",
         }
       };
-
-      return await axios.post(url, config).then(function (data) {
+      let params = {};
+      params['cx_id'] = this.cx_id;
+      return await axios.post(url, params, config).then(function (data) {
           return data;
       }).catch(function (error) {
           return error;
@@ -201,8 +251,15 @@ export const useFrontendStore = defineStore('frontendstore', {
     },//end fn
     async tryFetchSponsors(){
       const url = import.meta.env.VITE_BASE_BACKEND_URL + 'v1/public/sponsors';
-
-      return await axios.post(url).then(function (data) {
+      let config = {
+      headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          "Access-Control-Allow-Origin": "*",
+        }
+      };
+      let params = {};
+      params['cx_id'] = this.cx_id;
+      return await axios.post(url, params, config).then(function (data) {
           return data;
       }).catch(function (error) {
           return error;
@@ -217,7 +274,9 @@ export const useFrontendStore = defineStore('frontendstore', {
         }
       };
 
-      return await axios.post(url, config).then(function (data) {
+      let params = {};
+      params['cx_id'] = this.cx_id;
+      return await axios.post(url, params, config).then(function (data) {
           return data;
       }).catch(function (error) {
           return error;

@@ -6,8 +6,8 @@
           <slide v-for="slide in this.fstore.frontendBannerImages.length" :key="slide">
             <div class="carousel__item">
               <img
-                :src="getImageUrl(this.fstore.frontendBannerImages[slide - 1])"
-                :alt="slide - 1"
+                :src="getImageUrl(this.fstore.frontendBannerImages[slide - 1].banner_url)"
+                :alt="this.fstore.frontendBannerImages[slide - 1].banner_desc"
               />
             </div>
           </slide>
@@ -75,7 +75,19 @@ export default {
     }
   },
   created() {},
-  mounted() {},
+  mounted() {
+    this.fstore.tryFetchBanners().then((res) => {
+      if (res.data.status) {
+        let res_body = res.data.body
+
+        useFrontendStore().$patch((state) => {
+          state.frontendBannerImages = res_body
+        })
+      } else {
+        console.log('Banners is empty, Please set it on the backend')
+      } //end if
+    })
+  },
   computed: {
     ...mapStores(useFrontendStore),
     ...mapState(useFrontendStore, ['frontendBannerImages'])

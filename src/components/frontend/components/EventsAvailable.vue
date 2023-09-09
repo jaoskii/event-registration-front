@@ -10,7 +10,7 @@
           <div class="col-md-4" v-for="up_event in events.upcoming" :key="up_event.id">
             <div class="event-item">
               <div class="event-img">
-                <img src="./../../../assets/custom/img/event-thumb.png" />
+                <img :src="getImageUrl(up_event.thumbnail_img)" :alt="slide - 1" />
                 <span class="category">{{ up_event.event_category }}</span>
               </div>
               <div class="event-text">
@@ -38,7 +38,7 @@
           <div class="col-md-4" v-for="fin_event in events.finished" :key="fin_event.id">
             <div class="event-item">
               <div class="event-img">
-                <img src="./../../../assets/custom/img/event-thumb.png" />
+                <img :src="getImageUrl(fin_event.thumbnail_img)" :alt="slide - 1" />
                 <span class="category">{{ fin_event.event_category }}</span>
               </div>
               <div class="event-text">
@@ -95,6 +95,9 @@ export default {
         let data2 = res2.data
         this.events.finished = data2.body
       })
+    },
+    getImageUrl(filename) {
+      return new URL(`./../../../assets/custom/img/` + filename, import.meta.url).href
     }
   },
   computed: {

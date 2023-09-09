@@ -2,7 +2,7 @@
   <div class="col-md-4" v-for="event in events" :key="event.id">
     <div class="event-item">
       <div class="event-img">
-        <img src="./../../../assets/custom/img/event-thumb.png" />
+        <img :src="getImageUrl(event.thumbnail_img)" :alt="slide - 1" />
         <span class="category">{{ event.event_category }}</span>
       </div>
       <div class="event-text">
@@ -46,6 +46,9 @@ export default {
         this.events = data.body
         /* data.body.forEach((element) => {}) */
       })
+    },
+    getImageUrl(filename) {
+      return new URL(`./../../../assets/custom/img/` + filename, import.meta.url).href
     }
   },
   computed: {
